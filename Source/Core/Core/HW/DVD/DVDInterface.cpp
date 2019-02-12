@@ -3,6 +3,7 @@
 // Refer to the license.txt file included.
 
 #include "Core/HW/DVD/DVDInterface.h"
+#include "Core/HW/DVD/FileMonitor.h"
 
 #include <algorithm>
 #include <cinttypes>
@@ -1210,7 +1211,11 @@ void ScheduleReads(u64 offset, u32 length, const DiscIO::Partition& partition, u
   u64 dvd_offset = DVDThread::PartitionOffsetToRawOffset(offset, partition);
   dvd_offset = Common::AlignDown(dvd_offset, DVD_ECC_BLOCK_SIZE);
 
-  if (SConfig::GetInstance().bFastDiscSpeed)
+  auto volume = DVDThread::GetVolume();
+  auto isSoundFile = FileMonitor::IsSoundFileAt(*volume, partition, dvd_offset);
+
+  // Don't speed up sound files because that can make them stop playing
+  if (SConfig::GetInstance().bFastDiscSpeed && !isSoundFile)
   {
     // The SUDTR setting makes us act as if all reads are buffered
     buffer_start = std::numeric_limits<u64>::min();

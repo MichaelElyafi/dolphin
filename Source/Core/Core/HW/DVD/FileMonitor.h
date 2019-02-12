@@ -14,5 +14,6 @@ class Volume;
 
 namespace FileMonitor
 {
+bool IsSoundFileAt(const DiscIO::Volume& volume, const DiscIO::Partition& partition, u64 offset);
 void Log(const DiscIO::Volume& volume, const DiscIO::Partition& partition, u64 offset);
 }

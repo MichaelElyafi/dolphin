@@ -91,7 +91,7 @@ public final class DirectoryInitialization
       File externalPath = Environment.getExternalStorageDirectory();
       if (externalPath != null)
       {
-        userPath = externalPath.getAbsolutePath() + "/dolphin-emu";
+        userPath = externalPath.getAbsolutePath() + "/dolphin-zek";
         Log.debug("[DirectoryInitialization] User Dir: " + userPath);
         NativeLibrary.SetUserDirectory(userPath);
         return true;

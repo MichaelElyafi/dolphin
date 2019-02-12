@@ -198,6 +198,11 @@ DiscIO::Platform GetDiscType()
   return s_disc->GetVolumeType();
 }
 
+DiscIO::Volume* GetVolume()
+{
+  return s_disc.get();
+}
+
 u64 PartitionOffsetToRawOffset(u64 offset, const DiscIO::Partition& partition)
 {
   // PartitionOffsetToRawOffset is thread-safe, so calling WaitUntilIdle isn't necessary.

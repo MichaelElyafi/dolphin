@@ -30,7 +30,7 @@ public final class MainPresenter
 
   public void onCreate()
   {
-    String versionName = BuildConfig.VERSION_NAME;
+    String versionName = "5.0 Zek";
     mView.setVersionString(versionName);
 
     IntentFilter filter = new IntentFilter();

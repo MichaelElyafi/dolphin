@@ -43,7 +43,7 @@ public class GameFile
   public String getCoverPath()
   {
     return Environment.getExternalStorageDirectory().getPath() +
-            "/dolphin-emu/Cache/GameCovers/" + getGameId() + ".png";
+            "/dolphin-zek/Cache/GameCovers/" + getGameId() + ".png";
   }
 
   public String getCustomCoverPath()
@@ -55,6 +55,6 @@ public class GameFile
   {
     String gameId = getGameId();
     return "file://" + Environment.getExternalStorageDirectory().getPath() +
-            "/dolphin-emu/ScreenShots/" + gameId + "/" + gameId + "-1.png";
+            "/dolphin-zek/ScreenShots/" + gameId + "/" + gameId + "-1.png";
   }
 }

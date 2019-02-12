@@ -44,6 +44,7 @@ bool HasDisc();
 
 bool IsEncryptedAndHashed();
 DiscIO::Platform GetDiscType();
+DiscIO::Volume* GetVolume();
 u64 PartitionOffsetToRawOffset(u64 offset, const DiscIO::Partition& partition);
 IOS::ES::TMDReader GetTMD(const DiscIO::Partition& partition);
 IOS::ES::TicketReader GetTicket(const DiscIO::Partition& partition);

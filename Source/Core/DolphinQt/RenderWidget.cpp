@@ -34,7 +34,7 @@
 
 RenderWidget::RenderWidget(QWidget* parent) : QWidget(parent)
 {
-  setWindowTitle(QStringLiteral("Dolphin"));
+  setWindowTitle(QStringLiteral("Dolphin Zek"));
   setWindowIcon(Resources::GetAppIcon());
   setAcceptDrops(true);
 

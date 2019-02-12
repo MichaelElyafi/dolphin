@@ -54,7 +54,6 @@
 #include "VideoCommon/CPMemory.h"
 #include "VideoCommon/CommandProcessor.h"
 #include "VideoCommon/Debugger.h"
-#include "VideoCommon/FPSCounter.h"
 #include "VideoCommon/FramebufferManagerBase.h"
 #include "VideoCommon/ImageWrite.h"
 #include "VideoCommon/OnScreenDisplay.h"
@@ -292,14 +291,13 @@ void Renderer::CheckForConfigChanges()
 void Renderer::DrawDebugText()
 {
   const auto& config = SConfig::GetInstance();
-
   if (g_ActiveConfig.bShowFPS)
   {
     // Position in the top-right corner of the screen.
     ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - (10.0f * m_backbuffer_scale),
                                    10.0f * m_backbuffer_scale),
                             ImGuiCond_Always, ImVec2(1.0f, 0.0f));
-    ImGui::SetNextWindowSize(ImVec2(100.0f * m_backbuffer_scale, 30.0f * m_backbuffer_scale));
+    ImGui::SetNextWindowSize(ImVec2(100.0f * m_backbuffer_scale, 90.0f * m_backbuffer_scale));
 
     if (ImGui::Begin("FPS", nullptr,
                      ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoInputs |
@@ -307,7 +305,10 @@ void Renderer::DrawDebugText()
                          ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoNav |
                          ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing))
     {
-      ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "FPS: %.2f", m_fps_counter.GetFPS());
+    const Core::PerformanceStatistics& pstats = Core::GetPerformanceStatistics();
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "FPS: %.2f", pstats.FPS);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "VPS: %.2f", pstats.VPS);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SPEED: %.2f", pstats.Speed);
     }
     ImGui::End();
   }
@@ -972,8 +973,6 @@ void Renderer::Swap(u32 xfbAddr, u32 fbWidth, u32 fbStride, u32 fbHeight, const 
       // Update the window size based on the frame that was just rendered.
       // Due to depending on guest state, we need to call this every frame.
       SetWindowSize(texture_config.width, texture_config.height);
-
-      m_fps_counter.Update();
 
       DolphinAnalytics::PerformanceSample perf_sample;
       perf_sample.speed_ratio = SystemTimers::GetEstimatedEmulationPerformance();

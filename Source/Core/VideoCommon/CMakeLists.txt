@@ -13,7 +13,6 @@ add_library(videocommon
   Debugger.cpp
   DriverDetails.cpp
   Fifo.cpp
-  FPSCounter.cpp
   FramebufferManagerBase.cpp
   GeometryShaderGen.cpp
   GeometryShaderManager.cpp

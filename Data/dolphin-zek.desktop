@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
-Icon=dolphin-emu
-Exec=dolphin-emu
+Icon=dolphin-zek
+Exec=dolphin-zek
 Terminal=false
 Type=Application
 Categories=Game;Emulator;
-Name=Dolphin Emulator
+Name=Dolphin ZEK
 GenericName=Wii/GameCube Emulator
 Comment=A Wii/GameCube Emulator

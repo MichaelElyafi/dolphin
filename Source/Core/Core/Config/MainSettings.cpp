@@ -22,11 +22,11 @@ const ConfigInfo<PowerPC::CPUCore> MAIN_CPU_CORE{{System::Main, "Core", "CPUCore
 const ConfigInfo<bool> MAIN_JIT_FOLLOW_BRANCH{{System::Main, "Core", "JITFollowBranch"}, true};
 const ConfigInfo<bool> MAIN_FASTMEM{{System::Main, "Core", "Fastmem"}, true};
 const ConfigInfo<bool> MAIN_DSP_HLE{{System::Main, "Core", "DSPHLE"}, true};
-const ConfigInfo<int> MAIN_TIMING_VARIANCE{{System::Main, "Core", "TimingVariance"}, 40};
+const ConfigInfo<int> MAIN_TIMING_VARIANCE{{System::Main, "Core", "TimingVariance"}, 8};
 const ConfigInfo<bool> MAIN_CPU_THREAD{{System::Main, "Core", "CPUThread"}, true};
 const ConfigInfo<bool> MAIN_SYNC_ON_SKIP_IDLE{{System::Main, "Core", "SyncOnSkipIdle"}, true};
 const ConfigInfo<std::string> MAIN_DEFAULT_ISO{{System::Main, "Core", "DefaultISO"}, ""};
-const ConfigInfo<bool> MAIN_ENABLE_CHEATS{{System::Main, "Core", "EnableCheats"}, false};
+const ConfigInfo<bool> MAIN_ENABLE_CHEATS{{System::Main, "Core", "EnableCheats"}, true};
 const ConfigInfo<int> MAIN_GC_LANGUAGE{{System::Main, "Core", "SelectedLanguage"}, 0};
 const ConfigInfo<bool> MAIN_OVERRIDE_GC_LANGUAGE{{System::Main, "Core", "OverrideGCLang"}, false};
 const ConfigInfo<bool> MAIN_DPL2_DECODER{{System::Main, "Core", "DPL2Decoder"}, false};
