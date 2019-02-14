@@ -475,6 +475,10 @@ void UpdateAudioDMA()
 static void Do_ARAM_DMA()
 {
   s_dspState.DMAState = 1;
+  
+    if (SConfig::GetInstance().m_DSPInterruptHack)
+    GenerateDSPInterrupt(INT_ARAM);
+
 
   // ARAM DMA transfer rate has been measured on real hw
   int ticksToTransfer = (s_arDMA.Cnt.count / 32) * 246;

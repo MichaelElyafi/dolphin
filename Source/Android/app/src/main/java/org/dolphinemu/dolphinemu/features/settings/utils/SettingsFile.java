@@ -14,6 +14,7 @@ import org.dolphinemu.dolphinemu.features.settings.model.StringSetting;
 import org.dolphinemu.dolphinemu.features.settings.ui.SettingsActivityView;
 import org.dolphinemu.dolphinemu.utils.DirectoryInitialization;
 import org.dolphinemu.dolphinemu.utils.BiMap;
+import org.dolphinemu.dolphinemu.utils.DirectoryInitialization;
 import org.dolphinemu.dolphinemu.utils.Log;
 
 import java.io.BufferedReader;
@@ -40,12 +41,23 @@ public final class SettingsFile
 
 
   public static final String KEY_CPU_CORE = "CPUCore";
+  public static final String SECTION_INI_DSP = "DSP";
   public static final String KEY_DUAL_CORE = "CPUThread";
   public static final String KEY_OVERCLOCK_ENABLE = "OverclockEnable";
   public static final String KEY_OVERCLOCK_PERCENT = "Overclock";
   public static final String KEY_SPEED_LIMIT = "EmulationSpeed";
   public static final String KEY_VIDEO_BACKEND = "GFXBackend";
+  
+  public static final String KEY_SYNC_ON_SKIP_IDLE = "SyncOnSkipIdle";
+  public static final String KEY_SYNC_GPU_OVERCLOCK = "SyncGpuOverclock";
+  public static final String KEY_MMU_EMULATION = "MMU";
+  public static final String KEY_FAST_DISC_SPEED = "FastDiscSpeed";
+  public static final String KEY_VSYNC = "VSync";
+  
   public static final String KEY_AUDIO_STRETCH = "AudioStretch";
+  
+  public static final String KEY_AUDIO_BACKEND = "Backend";
+
   public static final String KEY_AUTO_DISC_CHANGE = "AutoDiscChange";
   public static final String KEY_GAME_CUBE_LANGUAGE = "SelectedLanguage";
   public static final String KEY_OVERRIDE_GAME_CUBE_LANGUAGE = "OverrideGCLang";

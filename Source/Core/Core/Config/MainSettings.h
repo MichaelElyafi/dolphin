@@ -84,6 +84,7 @@ extern const ConfigInfo<bool> MAIN_AUTO_DISC_CHANGE;
 
 extern const ConfigInfo<bool> MAIN_DSP_CAPTURE_LOG;
 extern const ConfigInfo<bool> MAIN_DSP_JIT;
+extern const ConfigInfo<bool> MAIN_DSP_INTERRUPT_HACK;
 extern const ConfigInfo<bool> MAIN_DUMP_AUDIO;
 extern const ConfigInfo<bool> MAIN_DUMP_AUDIO_SILENT;
 extern const ConfigInfo<bool> MAIN_DUMP_UCODE;
@@ -95,5 +96,4 @@ extern const ConfigInfo<int> MAIN_AUDIO_VOLUME;
 extern const ConfigInfo<std::string> MAIN_DUMP_PATH;
 extern const ConfigInfo<std::string> MAIN_FS_PATH;
 extern const ConfigInfo<std::string> MAIN_SD_PATH;
-
 }  // namespace Config

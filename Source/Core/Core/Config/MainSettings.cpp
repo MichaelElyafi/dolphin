@@ -22,7 +22,7 @@ const ConfigInfo<PowerPC::CPUCore> MAIN_CPU_CORE{{System::Main, "Core", "CPUCore
 const ConfigInfo<bool> MAIN_JIT_FOLLOW_BRANCH{{System::Main, "Core", "JITFollowBranch"}, true};
 const ConfigInfo<bool> MAIN_FASTMEM{{System::Main, "Core", "Fastmem"}, true};
 const ConfigInfo<bool> MAIN_DSP_HLE{{System::Main, "Core", "DSPHLE"}, true};
-const ConfigInfo<int> MAIN_TIMING_VARIANCE{{System::Main, "Core", "TimingVariance"}, 8};
+const ConfigInfo<int> MAIN_TIMING_VARIANCE{{System::Main, "Core", "TimingVariance"}, 40};
 const ConfigInfo<bool> MAIN_CPU_THREAD{{System::Main, "Core", "CPUThread"}, true};
 const ConfigInfo<bool> MAIN_SYNC_ON_SKIP_IDLE{{System::Main, "Core", "SyncOnSkipIdle"}, true};
 const ConfigInfo<std::string> MAIN_DEFAULT_ISO{{System::Main, "Core", "DefaultISO"}, ""};
@@ -79,6 +79,8 @@ const ConfigInfo<bool> MAIN_WIIMOTE_ENABLE_SPEAKER{{System::Main, "Core", "Wiimo
                                                    false};
 const ConfigInfo<bool> MAIN_RUN_COMPARE_SERVER{{System::Main, "Core", "RunCompareServer"}, false};
 const ConfigInfo<bool> MAIN_RUN_COMPARE_CLIENT{{System::Main, "Core", "RunCompareClient"}, false};
+
+
 const ConfigInfo<bool> MAIN_MMU{{System::Main, "Core", "MMU"}, false};
 const ConfigInfo<int> MAIN_BB_DUMP_PORT{{System::Main, "Core", "BBDumpPort"}, -1};
 const ConfigInfo<bool> MAIN_SYNC_GPU{{System::Main, "Core", "SyncGPU"}, false};
@@ -88,6 +90,8 @@ const ConfigInfo<int> MAIN_SYNC_GPU_MIN_DISTANCE{{System::Main, "Core", "SyncGpu
                                                  -200000};
 const ConfigInfo<float> MAIN_SYNC_GPU_OVERCLOCK{{System::Main, "Core", "SyncGpuOverclock"}, 1.0f};
 const ConfigInfo<bool> MAIN_FAST_DISC_SPEED{{System::Main, "Core", "FastDiscSpeed"}, false};
+
+
 const ConfigInfo<bool> MAIN_LOW_DCBZ_HACK{{System::Main, "Core", "LowDCBZHack"}, false};
 const ConfigInfo<bool> MAIN_FPRF{{System::Main, "Core", "FPRF"}, false};
 const ConfigInfo<bool> MAIN_ACCURATE_NANS{{System::Main, "Core", "AccurateNaNs"}, false};
@@ -110,6 +114,7 @@ const ConfigInfo<bool> MAIN_AUTO_DISC_CHANGE{{System::Main, "Core", "AutoDiscCha
 
 const ConfigInfo<bool> MAIN_DSP_CAPTURE_LOG{{System::Main, "DSP", "CaptureLog"}, false};
 const ConfigInfo<bool> MAIN_DSP_JIT{{System::Main, "DSP", "EnableJIT"}, true};
+const ConfigInfo<bool> MAIN_DSP_INTERRUPT_HACK{{System::Main, "DSP", "InterruptHack" }, false};
 const ConfigInfo<bool> MAIN_DUMP_AUDIO{{System::Main, "DSP", "DumpAudio"}, false};
 const ConfigInfo<bool> MAIN_DUMP_AUDIO_SILENT{{System::Main, "DSP", "DumpAudioSilent"}, false};
 const ConfigInfo<bool> MAIN_DUMP_UCODE{{System::Main, "DSP", "DumpUCode"}, false};
@@ -122,5 +127,4 @@ const ConfigInfo<int> MAIN_AUDIO_VOLUME{{System::Main, "DSP", "Volume"}, 100};
 const ConfigInfo<std::string> MAIN_DUMP_PATH{{System::Main, "General", "DumpPath"}, ""};
 const ConfigInfo<std::string> MAIN_FS_PATH{{System::Main, "General", "NANDRootPath"}, ""};
 const ConfigInfo<std::string> MAIN_SD_PATH{{System::Main, "General", "WiiSDCardPath"}, ""};
-
 }  // namespace Config

@@ -592,6 +592,11 @@ if (APPLE)
   add_subdirectory(Externals/ed25519)
 endif()
 
+# Using static FreeSurround from Externals
+# There is no system FreeSurround library.
+message(STATUS "Using static FreeSurround from Externals")
+add_subdirectory(Externals/FreeSurround)
+
 # Using static soundtouch from Externals
 # Unable to use system soundtouch library: We require shorts, not floats.
 add_subdirectory(Externals/soundtouch)
@@ -660,6 +665,8 @@ else()
   include_directories(Externals/mbedtls/include)
 endif()
 
+
+#curl
 find_package(CURL)
 if(CURL_FOUND)
   message(STATUS "Using shared libcurl")
@@ -671,10 +678,9 @@ else()
   include_directories(BEFORE Externals/curl/include)
 endif()
 
-if (NOT ANDROID)
+#iconv
   find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
   find_path(ICONV_INCLUDE_DIR NAMES iconv.h)
-endif()
 
 if (NOT ANDROID AND ICONV_LIBRARIES AND ICONV_INCLUDE_DIR)
   mark_as_advanced(ICONV_INCLUDE_DIR ICONV_LIBRARIES)

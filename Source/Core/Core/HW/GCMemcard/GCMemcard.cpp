@@ -1283,6 +1283,11 @@ s32 GCMemcard::FZEROGX_MakeSaveGameValid(const Header& cardheader, const DEntry&
   if (strcmp(reinterpret_cast<const char*>(direntry.m_filename.data()), "f_zero.dat") != 0)
     return 0;
 
+  // also make sure that the filesize is correct
+  if (FileBuffer.size() != 4)
+    return 0;
+
+
   // get encrypted destination memory card serial numbers
   cardheader.CARD_GetSerialNo(&serial1, &serial2);
 
@@ -1295,7 +1300,10 @@ s32 GCMemcard::FZEROGX_MakeSaveGameValid(const Header& cardheader, const DEntry&
   // calc 16-bit checksum
   for (i = 0x02; i < 0x8000; i++)
   {
-    chksum ^= (FileBuffer[block].m_block[i - (block * 0x2000)] & 0xFF);
+    //chksum ^= (FileBuffer[block].m_block[i - (block * 0x2000)] & 0xFF);
+    const int block = i / 0x2000;
+    const int offset = i % 0x2000;
+    chksum ^= (FileBuffer[block].m_block[offset] & 0xFF);
     for (j = 8; j > 0; j--)
     {
       if (chksum & 1)
@@ -1303,8 +1311,8 @@ s32 GCMemcard::FZEROGX_MakeSaveGameValid(const Header& cardheader, const DEntry&
       else
         chksum >>= 1;
     }
-    if (!(i % 0x2000))
-      block++;
+   // if (!(i % 0x2000))
+   //   block++;
   }
 
   // set new checksum

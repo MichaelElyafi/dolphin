@@ -306,9 +306,9 @@ void Renderer::DrawDebugText()
                          ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing))
     {
     const Core::PerformanceStatistics& pstats = Core::GetPerformanceStatistics();
-	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "FPS: %.2f", pstats.FPS);
-	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "VPS: %.2f", pstats.VPS);
-	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SPEED: %.2f", pstats.Speed);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "FPS: %.0f", pstats.FPS);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "VPS: %.0f", pstats.VPS);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SPEED: %.0f%", pstats.Speed);
     }
     ImGui::End();
   }

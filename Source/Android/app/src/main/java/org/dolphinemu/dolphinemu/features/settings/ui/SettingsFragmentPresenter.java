@@ -217,7 +217,15 @@ public final class SettingsFragmentPresenter
     Setting overclockEnable = null;
     Setting overclock = null;
     Setting speedLimit = null;
+	
+	Setting mmuEmulation = null;
+	Setting fastDiscSpeed = null;
+	Setting syncOnSkipIdle = null;
+	Setting syncGpuOverclock = null;
+	Setting vSync = null;
+	
     Setting audioStretch = null;
+    Setting audioBackend = null;
     Setting autoDiscChange = null;
     Setting analytics = null;
     Setting enableSaveState;
@@ -230,7 +238,16 @@ public final class SettingsFragmentPresenter
     overclockEnable = coreSection.getSetting(SettingsFile.KEY_OVERCLOCK_ENABLE);
     overclock = coreSection.getSetting(SettingsFile.KEY_OVERCLOCK_PERCENT);
     speedLimit = coreSection.getSetting(SettingsFile.KEY_SPEED_LIMIT);
+	
+	
+	syncOnSkipIdle = coreSection.getSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE);
+	syncGpuOverclock = coreSection.getSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK);
+	mmuEmulation = coreSection.getSetting(SettingsFile.KEY_MMU_EMULATION);
+	fastDiscSpeed = coreSection.getSetting(SettingsFile.KEY_FAST_DISC_SPEED);
+	vSync = mSettings.getSection(Settings.SECTION_GFX_HARDWARE).getSetting(SettingsFile.KEY_VSYNC);
+	
     audioStretch = coreSection.getSetting(SettingsFile.KEY_AUDIO_STRETCH);
+    audioBackend = mSettings.getSection(Settings.SECTION_INI_DSP).getSetting(SettingsFile.KEY_AUDIO_BACKEND);
     autoDiscChange = coreSection.getSetting(SettingsFile.KEY_AUTO_DISC_CHANGE);
     analytics = analyticsSection.getSetting(SettingsFile.KEY_ANALYTICS_ENABLED);
     enableSaveState = coreSection.getSetting(SettingsFile.KEY_ENABLE_SAVE_STATES);
@@ -269,6 +286,13 @@ public final class SettingsFragmentPresenter
             overclock));
     sl.add(new SliderSetting(SettingsFile.KEY_SPEED_LIMIT, Settings.SECTION_INI_CORE,
             R.string.speed_limit, 0, 200, "%", 100, speedLimit));
+			
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE, Settings.SECTION_INI_CORE, R.string.sync_on_skip_idle, R.string.sync_on_skip_idle_description, true, syncOnSkipIdle));
+	sl.add(new SliderSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK, Settings.SECTION_INI_CORE, R.string.sync_gpu_overclock, R.string.sync_gpu_overclock_description, 200, "%", 100, syncGpuOverclock));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_MMU_EMULATION, Settings.SECTION_INI_CORE, R.string.mmu_emulation, R.string.mmu_emulation_description, true, mmuEmulation));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_FAST_DISC_SPEED, Settings.SECTION_INI_CORE, R.string.fast_disc_speed, R.string.fast_disc_speed_description, false, fastDiscSpeed));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_VSYNC, Settings.SECTION_GFX_HARDWARE, R.string.vSync, R.string.vSync_description, false, vSync));
+	
     sl.add(new CheckBoxSetting(SettingsFile.KEY_AUDIO_STRETCH, Settings.SECTION_INI_CORE,
             R.string.audio_stretch, R.string.audio_stretch_description, false, audioStretch));
     sl.add(new CheckBoxSetting(SettingsFile.KEY_AUTO_DISC_CHANGE, Settings.SECTION_INI_CORE,
@@ -284,6 +308,14 @@ public final class SettingsFragmentPresenter
     }
     sl.add(new CheckBoxSetting(SettingsFile.KEY_ANALYTICS_ENABLED, Settings.SECTION_ANALYTICS,
             R.string.analytics, 0, false, analytics));
+
+    String defaultAudioBackend = NativeLibrary.DefaultAudioBackend();
+    String[] audioListEntries = NativeLibrary.GetAudioBackendList();
+    String[] audioListValues = new String[audioListEntries.length];
+    System.arraycopy(audioListEntries, 0, audioListValues, 0, audioListEntries.length);
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_AUDIO_BACKEND, Settings.SECTION_INI_DSP,
+      R.string.audio_backend, R.string.audio_backend_description, audioListEntries,
+      audioListValues, defaultAudioBackend, audioBackend));
   }
 
   private void addInterfaceSettings(ArrayList<SettingsItem> sl)

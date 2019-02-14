@@ -32,6 +32,18 @@
 #include "Core/Boot/Boot.h"
 #include "Core/BootManager.h"
 #include "Core/ConfigLoaders/GameConfigLoader.h"
+
+#include "Core/ConfigLoaders/BaseConfigLoader.h"
+	
+#include "Common/Config/Config.h"
+
+#include "Core/Config/SYSCONFSettings.h"
+	
+#include "VideoCommon/VideoConfig.h"
+
+#include "Core/Config/GraphicsSettings.h"
+
+#include "Core/Config/MainSettings.h"
 #include "Core/ConfigManager.h"
 #include "Core/Core.h"
 #include "Core/HW/DVD/DVDInterface.h"
@@ -43,6 +55,8 @@
 #include "Core/PowerPC/Profiler.h"
 #include "Core/State.h"
 
+#include "Core/TitleDatabase.h"
+
 #include "DiscIO/Enums.h"
 #include "DiscIO/Volume.h"
 
@@ -51,6 +65,8 @@
 #include "VideoCommon/OnScreenDisplay.h"
 #include "VideoCommon/RenderBase.h"
 #include "VideoCommon/VideoBackendBase.h"
+
+#include "AudioCommon/AudioCommon.h"
 
 #include "../../Core/Common/WindowSystemInfo.h"
 #include "jni/AndroidCommon/AndroidCommon.h"
@@ -536,6 +552,30 @@ JNIEXPORT jint JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_DefaultCPUCo
 {
   return static_cast<jint>(PowerPC::DefaultCPUCore());
 }
+
+JNIEXPORT jobjectArray JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_GetAudioBackendList(JNIEnv* env,
+                                                                                           jobject obj)
+{
+  const std::vector<std::string> backends = AudioCommon::GetSoundBackends();
+  jsize size = (jsize)backends.size();
+  jobjectArray list = (jobjectArray) env->NewObjectArray(
+    size,
+    env->FindClass("java/lang/String"),
+    ToJString(env, ""));
+
+  for(int i = 0; i < size; ++i)
+  {
+    env->SetObjectArrayElement(list, i, ToJString(env, backends[i]));
+  }
+  return list;
+}
+
+JNIEXPORT jstring JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_DefaultAudioBackend(JNIEnv* env,
+                                                                                   jobject obj)
+{
+  return ToJString(env, AudioCommon::GetDefaultSoundBackend());
+}
+
 
 JNIEXPORT void JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_SetProfiling(JNIEnv* env,
                                                                                  jobject obj,

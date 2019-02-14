@@ -2,6 +2,8 @@ package org.dolphinemu.dolphinemu.features.settings.model;
 
 import android.text.TextUtils;
 
+import org.dolphinemu.dolphinemu.NativeLibrary;
+
 import org.dolphinemu.dolphinemu.features.settings.ui.SettingsActivityView;
 import org.dolphinemu.dolphinemu.features.settings.utils.SettingsFile;
 
@@ -15,6 +17,11 @@ import java.util.TreeMap;
 public class Settings
 {
   public static final String SECTION_INI_CORE = "Core";
+  
+  public static final String SECTION_INI_DSP = "DSP";
+  
+  public static final String SECTION_GFX_HARDWARE = "Hardware";
+  
   public static final String SECTION_INI_INTERFACE = "Interface";
 
   public static final String SECTION_GFX_SETTINGS = "Settings";
@@ -40,10 +47,10 @@ public class Settings
   static
   {
     configFileSectionsMap.put(SettingsFile.FILE_NAME_DOLPHIN,
-            Arrays.asList(SECTION_INI_CORE, SECTION_INI_INTERFACE, SECTION_BINDINGS,
+            Arrays.asList(SECTION_INI_CORE, SECTION_INI_DSP, SECTION_INI_INTERFACE, SECTION_BINDINGS,
                     SECTION_ANALYTICS, SECTION_DEBUG));
     configFileSectionsMap.put(SettingsFile.FILE_NAME_GFX,
-            Arrays.asList(SECTION_GFX_SETTINGS, SECTION_GFX_ENHANCEMENTS, SECTION_GFX_HACKS,
+            Arrays.asList(SECTION_GFX_SETTINGS, SECTION_GFX_ENHANCEMENTS, SECTION_GFX_HACKS, SECTION_GFX_HARDWARE,
                     SECTION_STEREOSCOPY));
     configFileSectionsMap.put(SettingsFile.FILE_NAME_WIIMOTE,
             Arrays.asList(SECTION_WIIMOTE + 1, SECTION_WIIMOTE + 2, SECTION_WIIMOTE + 3,

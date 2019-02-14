@@ -17,13 +17,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Last changed  : $Date: 2012-06-13 22:29:53 +0300 (Wed, 13 Jun 2012) $
-// File revision : $Revision: 4 $
-//
-// $Id: FIFOSamplePipe.h 143 2012-06-13 19:29:53Z oparviai $
-//
-////////////////////////////////////////////////////////////////////////////////
-//
 // License :
 //
 //  SoundTouch audio processing library
@@ -58,6 +51,18 @@ namespace soundtouch
 /// Abstract base class for FIFO (first-in-first-out) sample processing classes.
 class FIFOSamplePipe
 {
+protected:
+
+    bool verifyNumberOfChannels(int nChannels) const
+    {
+        if ((nChannels > 0) && (nChannels <= SOUNDTOUCH_MAX_CHANNELS))
+        {
+            return true;
+        }
+        ST_THROW_RT_ERROR("Error: Illegal number of channels");
+        return false;
+    }
+
 public:
     // virtual default destructor
     virtual ~FIFOSamplePipe() {}

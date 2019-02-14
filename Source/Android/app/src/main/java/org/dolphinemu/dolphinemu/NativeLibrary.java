@@ -7,6 +7,9 @@
 package org.dolphinemu.dolphinemu;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.Surface;
 
 import org.dolphinemu.dolphinemu.activities.EmulationActivity;
@@ -346,6 +349,16 @@ public final class NativeLibrary
   public static native String GetUserDirectory();
 
   public static native int DefaultCPUCore();
+
+   /**
+   * Returns the current available audio backend list
+   */
+  public static native String[] GetAudioBackendList();
+
+  /**
+   * Returns the current working audio backend
+   */
+  public static native String DefaultAudioBackend();
 
   /**
    * Begins emulation.

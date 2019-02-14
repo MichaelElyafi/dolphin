@@ -27,8 +27,8 @@ public:
   {
     if (!video_backend.empty())
       m_values.emplace_back(std::make_tuple(Config::MAIN_GFX_BACKEND.location, video_backend));
-
-    if (!audio_backend.empty())
+	
+   if (!video_backend.empty())
       m_values.emplace_back(
           std::make_tuple(Config::MAIN_DSP_HLE.location, ValueToString(audio_backend == "HLE")));
 

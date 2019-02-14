@@ -136,6 +136,23 @@
     <string name="wiimote_speaker_description">Enable sound output through the speaker on a real Wiimote (DolphinBar required).</string>
     <string name="audio_stretch">Audio Stretching</string>
     <string name="audio_stretch_description">Stretches audio to reduce stuttering. Increases latency.</string>
+	
+	
+    <string name="sync_on_skip_idle">Sync On Skip Idle</string>
+    <string name="sync_on_skip_idle_description">We are waiting until the FIFO finish and while we process only the events required by the FIFO.</string>
+    <string name="sync_gpu_overclock">Sync Gpu Overclock</string>
+    <string name="sync_gpu_overclock_description">Set times to run gpu commands on cpu thread.</string>
+    <string name="mmu_emulation">MMU Emulation</string>
+    <string name="mmu_emulation_description">Disabling MMU Emulation gives good performance, but game may get garbage data or even crash!</string>
+    <string name="fast_disc_speed">Fast Disc Speed</string>
+    <string name="fast_disc_speed_description">Accelerates the emulated disc speed, removing any loading emulation.</string>
+    <string name="audio_backend">Audio Backend</string>
+    <string name="audio_backend_description">Set backend used for audio output.</string>
+	
+    <string name="vSync">Vsync</string>
+    <string name="vSync_description">"Waits for vertical blanks in order to prevent tearing. Decreases performance if "
+                 "emulation speed is below 100%.\n\nIf unsure, leave this unchecked."</string>
+   
     <string name="auto_disc_change">Change Discs Automatically</string>
     <string name="enable_save_states">Enable Savestates</string>
     <string name="enable_save_states_description">WARNING: Savestates may not be compatible with future versions of Dolphin and can make it impossible to create normal saves in some cases. Never use savestates as the only way of saving your progress.</string>
@@ -159,8 +176,8 @@
     <!-- Video Preference Fragment -->
     <string name="video_backend">Video Backend</string>
     <string name="video_backend_description">Select the API used for graphics rendering.</string>
-    <string name="show_fps">Show FPS</string>
-    <string name="show_fps_description">Show the number of frames rendered per second as a measure of emulation speed.</string>
+    <string name="show_fps">Show FPS/VPS</string>
+    <string name="show_fps_description">Show the number of FPS as well as VPS as a measure of emulation speed.</string>
 
     <string name="enhancements_submenu">Enhancements</string>
     <string name="internal_resolution">Internal Resolution</string>
@@ -226,6 +243,7 @@
     <string name="disable_destination_alpha_description">Disables emulation of a hardware feature called destination alpha, which is used in many games for various effects.</string>
     <string name="fast_depth_calculation">Fast Depth Calculation</string>
     <string name="fast_depth_calculation_description">Uses a less accurate algorithm to calculate depth values.</string>
+	
     <string name="aspect_ratio">Aspect Ratio</string>
     <string name="aspect_ratio_description">Select what aspect ratio to use when rendering</string>
     <string name="shader_compilation_mode">Shader Compilation Mode</string>
