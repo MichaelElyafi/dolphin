@@ -27,8 +27,12 @@ import org.dolphinemu.dolphinemu.utils.EGLHelper;
 import org.dolphinemu.dolphinemu.utils.Log;
 import org.dolphinemu.dolphinemu.utils.TvUtil;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class SettingsFragmentPresenter
 {
@@ -128,9 +132,21 @@ public final class SettingsFragmentPresenter
       case CONFIG_GENERAL:
         addGeneralSettings(sl);
         break;
+		
+      case CONFIG_NETPLAY:
+        addNetplaySettings(sl);
+        break;
 
       case CONFIG_INTERFACE:
         addInterfaceSettings(sl);
+        break;
+
+      case CONFIG_AUDIO:
+        addAudioSettings(sl);
+        break;
+		
+      case CONFIG_PATH:
+        addPathSettings(sl);
         break;
 
       case CONFIG_GAME_CUBE:
@@ -201,12 +217,20 @@ public final class SettingsFragmentPresenter
 
   private void addConfigSettings(ArrayList<SettingsItem> sl)
   {
+    sl.add(new HeaderSetting(null, null, R.string.general_config, 0));
     sl.add(new SubmenuSetting(null, null, R.string.general_submenu, 0, MenuTag.CONFIG_GENERAL));
     sl.add(new SubmenuSetting(null, null, R.string.interface_submenu, 0, MenuTag.CONFIG_INTERFACE));
-
+    sl.add(new SubmenuSetting(null, null, R.string.audio_submenu, 0, MenuTag.CONFIG_AUDIO));
+    sl.add(new SubmenuSetting(null, null, R.string.path_submenu, 0, MenuTag.CONFIG_PATH));
     sl.add(new SubmenuSetting(null, null, R.string.gamecube_submenu, 0, MenuTag.CONFIG_GAME_CUBE));
     sl.add(new SubmenuSetting(null, null, R.string.wii_submenu, 0, MenuTag.CONFIG_WII));
+    sl.add(new HeaderSetting(null, null, R.string.graphics_graphic, 0));
+    sl.add(new SubmenuSetting(null, null, R.string.graphics_general_submenu, 0, MenuTag.GRAPHICS));
+    sl.add(new SubmenuSetting(null, null, R.string.enhancements_submenu, 0, MenuTag.ENHANCEMENTS));
+    sl.add(new SubmenuSetting(null, null, R.string.hacks_submenu, 0, MenuTag.HACKS));
     sl.add(new SubmenuSetting(null, null, R.string.debug_submenu, 0, MenuTag.DEBUG));
+    sl.add(new SubmenuSetting(null, null, R.string.netplay_submenu, 0, MenuTag.CONFIG_NETPLAY));
+	
     sl.add(new HeaderSetting(null, null, R.string.gametdb_thanks, 0));
   }
 
@@ -222,10 +246,7 @@ public final class SettingsFragmentPresenter
 	Setting fastDiscSpeed = null;
 	Setting syncOnSkipIdle = null;
 	Setting syncGpuOverclock = null;
-	Setting vSync = null;
-	
-    Setting audioStretch = null;
-    Setting audioBackend = null;
+
     Setting autoDiscChange = null;
     Setting analytics = null;
     Setting enableSaveState;
@@ -239,15 +260,12 @@ public final class SettingsFragmentPresenter
     overclock = coreSection.getSetting(SettingsFile.KEY_OVERCLOCK_PERCENT);
     speedLimit = coreSection.getSetting(SettingsFile.KEY_SPEED_LIMIT);
 	
-	
 	syncOnSkipIdle = coreSection.getSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE);
 	syncGpuOverclock = coreSection.getSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK);
 	mmuEmulation = coreSection.getSetting(SettingsFile.KEY_MMU_EMULATION);
 	fastDiscSpeed = coreSection.getSetting(SettingsFile.KEY_FAST_DISC_SPEED);
-	vSync = mSettings.getSection(Settings.SECTION_GFX_HARDWARE).getSetting(SettingsFile.KEY_VSYNC);
+
 	
-    audioStretch = coreSection.getSetting(SettingsFile.KEY_AUDIO_STRETCH);
-    audioBackend = mSettings.getSection(Settings.SECTION_INI_DSP).getSetting(SettingsFile.KEY_AUDIO_BACKEND);
     autoDiscChange = coreSection.getSetting(SettingsFile.KEY_AUTO_DISC_CHANGE);
     analytics = analyticsSection.getSetting(SettingsFile.KEY_ANALYTICS_ENABLED);
     enableSaveState = coreSection.getSetting(SettingsFile.KEY_ENABLE_SAVE_STATES);
@@ -291,10 +309,8 @@ public final class SettingsFragmentPresenter
 	sl.add(new SliderSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK, Settings.SECTION_INI_CORE, R.string.sync_gpu_overclock, R.string.sync_gpu_overclock_description, 200, "%", 100, syncGpuOverclock));
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_MMU_EMULATION, Settings.SECTION_INI_CORE, R.string.mmu_emulation, R.string.mmu_emulation_description, true, mmuEmulation));
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_FAST_DISC_SPEED, Settings.SECTION_INI_CORE, R.string.fast_disc_speed, R.string.fast_disc_speed_description, false, fastDiscSpeed));
-	sl.add(new CheckBoxSetting(SettingsFile.KEY_VSYNC, Settings.SECTION_GFX_HARDWARE, R.string.vSync, R.string.vSync_description, false, vSync));
+
 	
-    sl.add(new CheckBoxSetting(SettingsFile.KEY_AUDIO_STRETCH, Settings.SECTION_INI_CORE,
-            R.string.audio_stretch, R.string.audio_stretch_description, false, audioStretch));
     sl.add(new CheckBoxSetting(SettingsFile.KEY_AUTO_DISC_CHANGE, Settings.SECTION_INI_CORE,
             R.string.auto_disc_change, 0, false, autoDiscChange));
     sl.add(new CheckBoxSetting(SettingsFile.KEY_ENABLE_SAVE_STATES, Settings.SECTION_INI_CORE,
@@ -308,16 +324,8 @@ public final class SettingsFragmentPresenter
     }
     sl.add(new CheckBoxSetting(SettingsFile.KEY_ANALYTICS_ENABLED, Settings.SECTION_ANALYTICS,
             R.string.analytics, 0, false, analytics));
-
-    String defaultAudioBackend = NativeLibrary.DefaultAudioBackend();
-    String[] audioListEntries = NativeLibrary.GetAudioBackendList();
-    String[] audioListValues = new String[audioListEntries.length];
-    System.arraycopy(audioListEntries, 0, audioListValues, 0, audioListEntries.length);
-    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_AUDIO_BACKEND, Settings.SECTION_INI_DSP,
-      R.string.audio_backend, R.string.audio_backend_description, audioListEntries,
-      audioListValues, defaultAudioBackend, audioBackend));
   }
-
+ 
   private void addInterfaceSettings(ArrayList<SettingsItem> sl)
   {
     Setting usePanicHandlers = null;
@@ -333,6 +341,98 @@ public final class SettingsFragmentPresenter
     sl.add(new CheckBoxSetting(SettingsFile.KEY_OSD_MESSAGES, Settings.SECTION_INI_INTERFACE,
             R.string.osd_messages, R.string.osd_messages_description, true,
             onScreenDisplayMessages));
+  }
+  
+  private void addAudioSettings(ArrayList<SettingsItem> sl)
+  {
+    Setting audioStretch = null;
+    Setting audioBackend = null;
+    Setting audioVolume = null;
+
+    SettingSection coreSection = mSettings.getSection(Settings.SECTION_INI_CORE);
+	
+    audioStretch = coreSection.getSetting(SettingsFile.KEY_AUDIO_STRETCH);
+    audioBackend = mSettings.getSection(Settings.SECTION_INI_DSP).getSetting(SettingsFile.KEY_AUDIO_BACKEND);
+    audioVolume = mSettings.getSection(Settings.SECTION_INI_DSP).getSetting(SettingsFile.KEY_AUDIO_VOLUME);
+
+    sl.add(new CheckBoxSetting(SettingsFile.KEY_AUDIO_STRETCH, Settings.SECTION_INI_CORE,
+            R.string.audio_stretch, R.string.audio_stretch_description, false, audioStretch));
+
+    String defaultAudioBackend = NativeLibrary.DefaultAudioBackend();
+    String[] audioListEntries = NativeLibrary.GetAudioBackendList();
+    String[] audioListValues = new String[audioListEntries.length];
+    System.arraycopy(audioListEntries, 0, audioListValues, 0, audioListEntries.length);
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_AUDIO_BACKEND, Settings.SECTION_INI_DSP,
+      R.string.audio_backend, R.string.audio_backend_description, audioListEntries,
+      audioListValues, defaultAudioBackend, audioBackend));
+    sl.add(new SliderSetting(SettingsFile.KEY_AUDIO_VOLUME, Settings.SECTION_INI_DSP,
+            R.string.audio_volume, R.string.audio_volume_description, 100, "%", 100, audioVolume));
+  }
+  
+  private static final Set<String> extensionsForGames = new HashSet<>(Arrays.asList(
+          "gcm", "tgc", "iso", "ciso", "gcz", "wbfs", "wad", "dol", "elf"));
+  
+
+  private static String fileExtensionCheck(String filename)
+  {
+    int i = filename.lastIndexOf('.');
+    return i < 0 ? "" : filename.substring(i + 1);
+  }
+  
+  
+  private String[] getGameList()
+  {
+    List<String> result = new ArrayList<>();
+    result.add("");
+    try
+    {
+      String gamesPath =
+              DirectoryInitialization.getDolphinInternalDirectory() + "/Games";
+      File file = new File(gamesPath);
+      File[] gameFiles = file.listFiles();
+      if (gameFiles != null)
+      {
+        for (int i = 0; i < gameFiles.length; i++)
+        {
+          String name = gameFiles[i].getName();
+			result.add(name);
+
+        }
+
+		return result.toArray(new String[0]);
+      }
+    }
+    catch (Exception ex)
+    {
+      Log.debug("[Settings] Unable to find games");
+      // return empty list
+    }
+
+    return new String[]{};
+  }
+  
+  private void addPathSettings(ArrayList<SettingsItem> sl)
+  {
+    Setting defaultISO = null;
+
+    Setting sdCard = null;
+	
+    defaultISO = mSettings.getSection(Settings.SECTION_INI_CORE).getSetting(SettingsFile.KEY_DEFAULT_ISO);
+
+   // sdCard = mSettings.getSection(Settings.SECTION_INI_DSP).getSetting(SettingsFile.KEY_AUDIO_BACKEND);
+	
+    String[] gameEntries = getGameList();
+    String[] gameEntriesValues = new String[gameEntries.length];
+    System.arraycopy(gameEntries, 0, gameEntriesValues, 0, gameEntries.length);
+    //shaderListValues[0] = "";
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_DEFAULT_ISO,
+            Settings.SECTION_INI_CORE, R.string.default_iso,
+            R.string.default_iso, gameEntries, gameEntriesValues, "",
+            defaultISO));
+	
+
+  // sl.add(new CheckBoxSetting(SettingsFile.KEY_AUDIO_STRETCH, Settings.SECTION_INI_CORE,
+  //         R.string.audio_stretch, R.string.audio_stretch_description, false, sdCard));
   }
 
   private void addGameCubeSettings(ArrayList<SettingsItem> sl)
@@ -364,13 +464,18 @@ public final class SettingsFragmentPresenter
 
   private void addWiiSettings(ArrayList<SettingsItem> sl)
   {
+    Setting insertSDCard = null;
     Setting continuousScan = null;
     Setting wiimoteSpeaker = null;
-
+	
     SettingSection coreSection = mSettings.getSection(Settings.SECTION_INI_CORE);
+	insertSDCard = coreSection.getSetting(SettingsFile.KEY_INSERT_SD);
     continuousScan = coreSection.getSetting(SettingsFile.KEY_WIIMOTE_SCAN);
     wiimoteSpeaker = coreSection.getSetting(SettingsFile.KEY_WIIMOTE_SPEAKER);
 
+    sl.add(new CheckBoxSetting(SettingsFile.KEY_INSERT_SD, Settings.SECTION_INI_CORE,
+            R.string.wii_insert_sd_card, R.string.wii_insert_sd_card_description, true,
+            insertSDCard));	
     sl.add(new CheckBoxSetting(SettingsFile.KEY_WIIMOTE_SCAN, Settings.SECTION_INI_CORE,
             R.string.wiimote_scanning, R.string.wiimote_scanning_description, true,
             continuousScan));
@@ -436,14 +541,16 @@ public final class SettingsFragmentPresenter
     Setting shaderCompilationMode = null;
     Setting waitForShaders = null;
     Setting aspectRatio = null;
-
+	Setting vSync = null;
+	
     SettingSection gfxSection = mSettings.getSection(Settings.SECTION_GFX_SETTINGS);
     showFps = gfxSection.getSetting(SettingsFile.KEY_SHOW_FPS);
     shaderCompilationMode = gfxSection.getSetting(SettingsFile.KEY_SHADER_COMPILATION_MODE);
     waitForShaders = gfxSection.getSetting(SettingsFile.KEY_WAIT_FOR_SHADERS);
     aspectRatio = gfxSection.getSetting(SettingsFile.KEY_ASPECT_RATIO);
+	vSync = mSettings.getSection(Settings.SECTION_GFX_HARDWARE).getSetting(SettingsFile.KEY_VSYNC);
 
-    sl.add(new HeaderSetting(null, null, R.string.graphics_general, 0));
+    //sl.add(new HeaderSetting(null, null, R.string.graphics_general, 0));
     sl.add(new SingleChoiceSetting(SettingsFile.KEY_VIDEO_BACKEND_INDEX, Settings.SECTION_INI_CORE,
             R.string.video_backend, 0, R.array.videoBackendEntries,
             R.array.videoBackendValues, 0, videoBackend));
@@ -459,10 +566,51 @@ public final class SettingsFragmentPresenter
     sl.add(new SingleChoiceSetting(SettingsFile.KEY_ASPECT_RATIO, Settings.SECTION_GFX_SETTINGS,
             R.string.aspect_ratio, R.string.aspect_ratio_description, R.array.aspectRatioEntries,
             R.array.aspectRatioValues, 0, aspectRatio));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_VSYNC, Settings.SECTION_GFX_HARDWARE, R.string.vSync, R.string.vSync_description, false, vSync));
 
-    sl.add(new HeaderSetting(null, null, R.string.graphics_enhancements_and_hacks, 0));
-    sl.add(new SubmenuSetting(null, null, R.string.enhancements_submenu, 0, MenuTag.ENHANCEMENTS));
-    sl.add(new SubmenuSetting(null, null, R.string.hacks_submenu, 0, MenuTag.HACKS));
+    //sl.add(new HeaderSetting(null, null, R.string.graphics_enhancements_and_hacks, 0));
+    //sl.add(new SubmenuSetting(null, null, R.string.enhancements_submenu, 0, MenuTag.ENHANCEMENTS));
+    //sl.add(new SubmenuSetting(null, null, R.string.hacks_submenu, 0, MenuTag.HACKS));
+  }
+  
+  private String[] getShaderList(String subDir)
+  {
+    try
+    {
+      String shadersPath =
+              DirectoryInitialization.getDolphinInternalDirectory() + "/Shaders";
+      if (!TextUtils.isEmpty(subDir))
+      {
+        shadersPath += "/" + subDir;
+      }
+
+      File file = new File(shadersPath);
+      File[] shaderFiles = file.listFiles();
+      if (shaderFiles != null)
+      {
+        String[] result = new String[shaderFiles.length + 1];
+        result[0] = mView.getActivity().getString(R.string.off);
+        for (int i = 0; i < shaderFiles.length; i++)
+        {
+          String name = shaderFiles[i].getName();
+          int extensionIndex = name.indexOf(".glsl");
+          if (extensionIndex > 0)
+          {
+            name = name.substring(0, extensionIndex);
+          }
+          result[i + 1] = name;
+        }
+
+        return result;
+      }
+    }
+    catch (Exception ex)
+    {
+      Log.debug("[Settings] Unable to find shader files");
+      // return empty list
+    }
+
+    return new String[]{};
   }
 
   private void addEnhanceSettings(ArrayList<SettingsItem> sl)
@@ -553,46 +701,6 @@ public final class SettingsFragmentPresenter
       sl.add(new SubmenuSetting(SettingsFile.KEY_STEREO_MODE, null, R.string.stereoscopy_submenu,
               R.string.stereoscopy_submenu_description, MenuTag.STEREOSCOPY));
     }
-  }
-
-  private String[] getShaderList(String subDir)
-  {
-    try
-    {
-      String shadersPath =
-              DirectoryInitialization.getDolphinInternalDirectory() + "/Shaders";
-      if (!TextUtils.isEmpty(subDir))
-      {
-        shadersPath += "/" + subDir;
-      }
-
-      File file = new File(shadersPath);
-      File[] shaderFiles = file.listFiles();
-      if (shaderFiles != null)
-      {
-        String[] result = new String[shaderFiles.length + 1];
-        result[0] = mView.getActivity().getString(R.string.off);
-        for (int i = 0; i < shaderFiles.length; i++)
-        {
-          String name = shaderFiles[i].getName();
-          int extensionIndex = name.indexOf(".glsl");
-          if (extensionIndex > 0)
-          {
-            name = name.substring(0, extensionIndex);
-          }
-          result[i + 1] = name;
-        }
-
-        return result;
-      }
-    }
-    catch (Exception ex)
-    {
-      Log.debug("[Settings] Unable to find shader files");
-      // return empty list
-    }
-
-    return new String[]{};
   }
 
   private void addHackSettings(ArrayList<SettingsItem> sl)
@@ -702,7 +810,117 @@ public final class SettingsFragmentPresenter
             R.string.debug_jitbranchoff, 0, false,
             jitBranchOff));
   }
+  
+  private String[] getNetPlayChoices()
+  {
+	String[] result = new String[2];
+    result[0] = "traversal";
+    result[1] = "direct";
+    return result;
+  }
+  private String[] getNetPlayNickNames()
+  {
+	String[] result = new String[1];
+    result[0] = "Player";
+    return result;
+  }
+  private String[] getNetPlayHostCode()
+  {
+	String[] result = new String[1];
+    result[0] = "00000000";
+    return result;
+  }
+  private String[] getNetPlayConnectPort()
+  {
+	String[] result = new String[1];
+    result[0] = "2626";
+    return result;
+  }
+  private String[] getNetPlayHostPort()
+  {
+	String[] result = new String[1];
+    result[0] = "2626";
+    return result;
+  }
+  private String[] getNetPlayListenPort()
+  {
+	String[] result = new String[1];
+    result[0] = "0";
+    return result;
+  }
+  private String[] getNetPlaySelectedHostGame()
+  {
+	String[] result = new String[1];
+    result[0] = "EMPTY";
+    return result;
+  }
+   private void addNetplaySettings(ArrayList<SettingsItem> sl)
+  {
+	  
+    Setting traversalChoice = null;	  
+    Setting nickName = null;	  
+    Setting hostCode = null;	  
+    Setting connectPort = null;	  
+    Setting hostPort = null;	  
+    Setting listenPort = null;	  
+    Setting selectedHostGame = null;	  
 
+
+    SettingSection netPlaySection = mSettings.getSection(Settings.SECTION_INI_NETPLAY);
+    traversalChoice = netPlaySection.getSetting(SettingsFile.KEY_TRAVERSAL_CHOICE);
+    nickName = netPlaySection.getSetting(SettingsFile.KEY_NICKNAME);
+    hostCode = netPlaySection.getSetting(SettingsFile.KEY_HOSTCODE);
+    connectPort = netPlaySection.getSetting(SettingsFile.KEY_CONNECTPORT);
+    hostPort = netPlaySection.getSetting(SettingsFile.KEY_HOSTPORT);
+    listenPort = netPlaySection.getSetting(SettingsFile.KEY_LISTENPORT);
+    selectedHostGame = netPlaySection.getSetting(SettingsFile.KEY_SELECTED_HOSTGAME);
+
+	String[] traversalChoiceName = getNetPlayChoices();
+    //String[] testnplay2 = new String[testnplay1.length];
+	//System.arraycopy(testnplay1, 0, testnplay2, 0, testnplay1.length);
+
+     sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_TRAVERSAL_CHOICE, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_traversal, R.string.netplay_traversal_description, traversalChoiceName,
+      traversalChoiceName, "", traversalChoice));
+	  
+	String[] netplayNickName = getNetPlayNickNames();
+	
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_NICKNAME, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_nickname, R.string.netplay_nickname_description, netplayNickName,
+      netplayNickName, "", nickName));
+
+	String[] netplayHostCode = getNetPlayHostCode();
+	
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_HOSTCODE, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_hostcode, R.string.netplay_hostcode_description, netplayHostCode,
+      netplayHostCode, "", hostCode));
+	  
+	String[] netplayConnectPort = getNetPlayConnectPort();
+	  
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_CONNECTPORT, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_connectport, R.string.netplay_connectport_description, netplayConnectPort,
+      netplayConnectPort, "", connectPort));
+	  
+	String[] netplayHostPort = getNetPlayHostPort();
+	  
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_HOSTPORT, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_hostport, R.string.netplay_hostport_description, netplayHostPort,
+      netplayHostPort, "", hostPort));
+	  
+	String[] netplayListenPort = getNetPlayListenPort();
+	  
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_LISTENPORT, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_listenport, R.string.netplay_listenport_description, netplayListenPort,
+      netplayListenPort, "", listenPort));
+	  
+	String[] netplaySelectedHostGame = getNetPlaySelectedHostGame();
+	  
+    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_SELECTED_HOSTGAME, Settings.SECTION_INI_NETPLAY,
+      R.string.netplay_selectedhostgame, R.string.netplay_selectedhostgame_description, netplaySelectedHostGame,
+      netplaySelectedHostGame, "", selectedHostGame));
+  }
+
+  
   private void addStereoSettings(ArrayList<SettingsItem> sl)
   {
     SettingSection stereoScopySection = mSettings.getSection(Settings.SECTION_STEREOSCOPY);

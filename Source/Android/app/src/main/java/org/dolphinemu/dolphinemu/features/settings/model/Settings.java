@@ -23,12 +23,16 @@ public class Settings
   public static final String SECTION_GFX_HARDWARE = "Hardware";
   
   public static final String SECTION_INI_INTERFACE = "Interface";
+  
+  public static final String SECTION_INI_NETPLAY = "NetPlay";
 
   public static final String SECTION_GFX_SETTINGS = "Settings";
   public static final String SECTION_GFX_ENHANCEMENTS = "Enhancements";
   public static final String SECTION_GFX_HACKS = "Hacks";
 
   public static final String SECTION_DEBUG = "Debug";
+  
+
 
   public static final String SECTION_STEREOSCOPY = "Stereoscopy";
 
@@ -47,7 +51,7 @@ public class Settings
   static
   {
     configFileSectionsMap.put(SettingsFile.FILE_NAME_DOLPHIN,
-            Arrays.asList(SECTION_INI_CORE, SECTION_INI_DSP, SECTION_INI_INTERFACE, SECTION_BINDINGS,
+            Arrays.asList(SECTION_INI_CORE, SECTION_INI_DSP, SECTION_INI_INTERFACE, SECTION_INI_NETPLAY, SECTION_BINDINGS,
                     SECTION_ANALYTICS, SECTION_DEBUG));
     configFileSectionsMap.put(SettingsFile.FILE_NAME_GFX,
             Arrays.asList(SECTION_GFX_SETTINGS, SECTION_GFX_ENHANCEMENTS, SECTION_GFX_HACKS, SECTION_GFX_HARDWARE,

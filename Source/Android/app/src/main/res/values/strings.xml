@@ -3,6 +3,7 @@
 
     <!-- Title of the app -->
     <string name="app_name">Dolphin ZEK</string>
+    <string name="app_name_version">Dolphin %1$s</string>
     <string name="host">app</string>
     <string name="scheme">dolphinemu</string>
 
@@ -113,6 +114,7 @@
     <string name="turntable_crossfade">Crossfade</string>
 
     <!-- General Preference Fragment -->
+    <string name="general_config">Config</string>
     <string name="general_submenu">General</string>
     <string name="cpu_core">CPU Core</string>
     <string name="cpu_core_description">%s</string>
@@ -130,14 +132,13 @@
     <string name="slot_a_device">GameCube Slot A Device</string>
     <string name="slot_b_device">GameCube Slot B Device</string>
     <string name="wii_submenu">Wii</string>
+    <string name="wii_insert_sd_card">Insert SD Card</string>
+    <string name="wii_insert_sd_card_description">Lets Dolphin know to use the SD card at the path specified</string>
     <string name="wiimote_scanning">Wii Remote Continuous Scanning</string>
     <string name="wiimote_scanning_description">Leave this on if you are using a DolphinBar for real Wiimote support.</string>
     <string name="wiimote_speaker">Wii Remote Speaker</string>
     <string name="wiimote_speaker_description">Enable sound output through the speaker on a real Wiimote (DolphinBar required).</string>
-    <string name="audio_stretch">Audio Stretching</string>
-    <string name="audio_stretch_description">Stretches audio to reduce stuttering. Increases latency.</string>
-	
-	
+		
     <string name="sync_on_skip_idle">Sync On Skip Idle</string>
     <string name="sync_on_skip_idle_description">We are waiting until the FIFO finish and while we process only the events required by the FIFO.</string>
     <string name="sync_gpu_overclock">Sync Gpu Overclock</string>
@@ -146,12 +147,6 @@
     <string name="mmu_emulation_description">Disabling MMU Emulation gives good performance, but game may get garbage data or even crash!</string>
     <string name="fast_disc_speed">Fast Disc Speed</string>
     <string name="fast_disc_speed_description">Accelerates the emulated disc speed, removing any loading emulation.</string>
-    <string name="audio_backend">Audio Backend</string>
-    <string name="audio_backend_description">Set backend used for audio output.</string>
-	
-    <string name="vSync">Vsync</string>
-    <string name="vSync_description">"Waits for vertical blanks in order to prevent tearing. Decreases performance if "
-                 "emulation speed is below 100%.\n\nIf unsure, leave this unchecked."</string>
    
     <string name="auto_disc_change">Change Discs Automatically</string>
     <string name="enable_save_states">Enable Savestates</string>
@@ -168,10 +163,29 @@
     <string name="panic_handlers_description">Show a message box when a potentially serious error has occurred. Disabling this may avoid annoying and non-fatal messages, but it may result in major crashes having no explanation at all.</string>
     <string name="osd_messages">Show On-Screen Display Messages</string>
     <string name="osd_messages_description">Display messages over the emulation screen area. These messages include memory card writes, video backend and CPU information, and JIT cache clearing.</string>
+   
+   <!-- Audio Settings -->
+    <string name="audio_submenu">Audio</string>
+    <string name="audio_backend">Audio Backend</string>
+    <string name="audio_backend_description">Set backend used for audio output.</string>
+    <string name="audio_volume">Volume</string>
+    <string name="audio_volume_description">Change the volume of the audio</string>
+    <string name="audio_stretch">Audio Stretching</string>
+    <string name="audio_stretch_description">Stretches audio to reduce stuttering. Increases latency.</string>
+	
+   <!-- Path Settings -->
+    <string name="path_submenu">Paths</string>
+    <string name="default_iso">Default ISO</string>
+    <string name="default_iso_description">Sets the default ISO</string>
 
+	
     <!-- Graphics Settings -->
-    <string name="graphics_general">General</string>
+    <string name="graphics_graphic">Graphics</string>
+    <string name="graphics_general_submenu">General</string>
     <string name="graphics_enhancements_and_hacks">Enhancements &amp; Hacks</string>
+    <string name="vSync">Vsync</string>
+    <string name="vSync_description">"Waits for vertical blanks in order to prevent tearing. Decreases performance if "
+                 "emulation speed is below 100%.\n\nIf unsure, leave this unchecked."</string>
 
     <!-- Video Preference Fragment -->
     <string name="video_backend">Video Backend</string>
@@ -247,7 +261,11 @@
     <string name="aspect_ratio">Aspect Ratio</string>
     <string name="aspect_ratio_description">Select what aspect ratio to use when rendering</string>
     <string name="shader_compilation_mode">Shader Compilation Mode</string>
-    <string name="shader_compilation_mode_description">Specifies when to use Ubershaders. Disabled - Never, Hybrid - Use ubershaders while compiling specialized shaders. Exclusive - Use only ubershaders, largest performance impact. Skip Drawing - Do not draw objects while shaders are compiling, will cause broken effects.</string>
+    <string name="shader_compilation_mode_description">Specifies when to use Ubershaders.</string>
+    <string name="shader_compilation_sync_description">Synchronous: Ubershaders are never used. Stuttering will occur during shader compilation, but GPU demands are low. Recommended for low-end hardware.\nIf unsure, select this mode.</string>
+    <string name="shader_compilation_sync_uber_description">Synchronous (Ubershaders): Ubershaders will always be used. Provides a near stutter-free experience at the cost of high GPU performance requirements. Only recommended for high-end systems.</string>
+    <string name="shader_compilation_async_uber_description">Asynchronous (Ubershaders): Ubershaders will be used to prevent stuttering during shader compilation, but specialized shaders will be used when they will not cause stuttering. In the best case it eliminates shader compilation stuttering while having minimal performance impact, but results depend on video driver behavior.</string>
+    <string name="shader_compilation_async_skip_description">Asynchronous (Skip Drawing): Prevents shader compilation stuttering by not rendering waiting objects. Can work in scenarios where Ubershaders doesn\'t, at the cost of introducing visual glitches and broken effects. Not recommended, only use if the other options give poor results on your system.</string>
     <string name="wait_for_shaders">Compile Shaders Before Starting</string>
     <string name="wait_for_shaders_description">This causes a delay when launching games, but will reduce stuttering early on.</string>
 
@@ -264,6 +282,23 @@
     <string name="debug_jitpairedoff">Jit Paired Disabled</string>
     <string name="debug_jitsystemregistersoffr">Jit System Registers Disabled</string>
     <string name="debug_jitbranchoff">Jit Branch Disabled</string>
+	
+    <!-- Netplay -->
+    <string name="netplay_submenu">Netplay</string>
+    <string name="netplay_traversal">Traversal Choice</string>
+    <string name="netplay_traversal_description">Type of connection you will be using</string>
+	<string name="netplay_nickname">Nick Name</string>
+    <string name="netplay_nickname_description">Your name that will be shown to others</string>
+	<string name="netplay_hostcode">Host Code</string>
+    <string name="netplay_hostcode_description">The generated code you have as a host</string>
+	<string name="netplay_connectport">Connect Port</string>
+    <string name="netplay_connectport_description">Port used to connect to others</string>
+	<string name="netplay_hostport">Host Port</string>
+    <string name="netplay_hostport_description">Port used to connect to you</string>
+	<string name="netplay_listenport">Listen Port</string>
+    <string name="netplay_listenport_description">No clue</string>
+	<string name="netplay_selectedhostgame">Selected Host Game</string>
+    <string name="netplay_selectedhostgame_description">Game used for netplay</string>
 
     <!-- Miscellaneous -->
     <string name="yes">Yes</string>
@@ -352,4 +387,11 @@
     <string name="width">Width</string>
     <string name="center">Center</string>
 
+    <string name="game_platform_wii">[Wii] %1$s %2$s</string>
+    <string name="game_platform_ngc">[NGC] %1$s %2$s</string>
+    <string name="game_platform_ware">[Ware] %1$s %2$s</string>
+    <string name="game_platform_n64">[N64] %1$s %2$s</string>
+    <string name="game_platform_nes">[NES] %1$s %2$s</string>
+    <string name="game_platform_sms">[SMS] %1$s %2$s</string>
+    <string name="game_platform_smd">[SMD] %1$s %2$s</string>
 </resources>

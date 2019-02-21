@@ -84,11 +84,11 @@ bool VulkanContext::CheckValidationLayerAvailablility()
           }) != layer_list.end());
 }
 
-VkInstance VulkanContext::CreateVulkanInstance(bool enable_surface, bool enable_debug_report,
+VkInstance VulkanContext::CreateVulkanInstance(WindowSystemType wstype, bool enable_debug_report,
                                                bool enable_validation_layer)
 {
   ExtensionList enabled_extensions;
-  if (!SelectInstanceExtensions(&enabled_extensions, enable_surface, enable_debug_report))
+  if (!SelectInstanceExtensions(&enabled_extensions, wstype, enable_debug_report))
     return VK_NULL_HANDLE;
 
   VkApplicationInfo app_info = {};
@@ -129,7 +129,7 @@ VkInstance VulkanContext::CreateVulkanInstance(bool enable_surface, bool enable_
   return instance;
 }
 
-bool VulkanContext::SelectInstanceExtensions(ExtensionList* extension_list, bool enable_surface,
+bool VulkanContext::SelectInstanceExtensions(ExtensionList* extension_list, WindowSystemType wstype,
                                              bool enable_debug_report)
 {
   u32 extension_count = 0;
@@ -172,24 +172,39 @@ bool VulkanContext::SelectInstanceExtensions(ExtensionList* extension_list, bool
   };
 
   // Common extensions
-  if (enable_surface && !SupportsExtension(VK_KHR_SURFACE_EXTENSION_NAME, true))
+  if (wstype != WindowSystemType::Headless &&
+      !SupportsExtension(VK_KHR_SURFACE_EXTENSION_NAME, true))
+  {
     return false;
+  }
 
 #if defined(VK_USE_PLATFORM_WIN32_KHR)
-  if (enable_surface && !SupportsExtension(VK_KHR_WIN32_SURFACE_EXTENSION_NAME, true))
+   if (wstype == WindowSystemType::Windows &&
+      !SupportsExtension(VK_KHR_WIN32_SURFACE_EXTENSION_NAME, true))
+  {
     return false;
-#elif defined(VK_USE_PLATFORM_XLIB_KHR)
-  if (enable_surface && !SupportsExtension(VK_KHR_XLIB_SURFACE_EXTENSION_NAME, true))
+  }
+#endif
+#if defined(VK_USE_PLATFORM_XLIB_KHR)
+  if (wstype == WindowSystemType::X11 &&
+      !SupportsExtension(VK_KHR_XLIB_SURFACE_EXTENSION_NAME, true))
+  {
     return false;
-#elif defined(VK_USE_PLATFORM_XCB_KHR)
-  if (enable_surface && !SupportsExtension(VK_KHR_XCB_SURFACE_EXTENSION_NAME, true))
+  }
+#endif
+#if defined(VK_USE_PLATFORM_ANDROID_KHR)
+  if (wstype == WindowSystemType::Android &&
+      !SupportsExtension(VK_KHR_ANDROID_SURFACE_EXTENSION_NAME, true))
+  {
     return false;
-#elif defined(VK_USE_PLATFORM_ANDROID_KHR)
-  if (enable_surface && !SupportsExtension(VK_KHR_ANDROID_SURFACE_EXTENSION_NAME, true))
+  }
+#endif
+#if defined(VK_USE_PLATFORM_MACOS_MVK)
+  if (wstype == WindowSystemType::MacOS &&
+      !SupportsExtension(VK_MVK_MACOS_SURFACE_EXTENSION_NAME, true))
+  {
     return false;
-#elif defined(VK_USE_PLATFORM_MACOS_MVK)
-  if (enable_surface && !SupportsExtension(VK_MVK_MACOS_SURFACE_EXTENSION_NAME, true))
-    return false;
+  }
 #endif
 
   // VK_EXT_debug_report
@@ -225,18 +240,17 @@ VulkanContext::GPUList VulkanContext::EnumerateGPUs(VkInstance instance)
 void VulkanContext::PopulateBackendInfo(VideoConfig* config)
 {
   config->backend_info.api_type = APIType::Vulkan;
-  config->backend_info.bSupportsExclusiveFullscreen = false;  // Currently WSI does not allow this.
-  config->backend_info.bSupports3DVision = false;             // D3D-exclusive.
-  config->backend_info.bSupportsOversizedViewports = true;    // Assumed support.
-  config->backend_info.bSupportsEarlyZ = true;                // Assumed support.
-  config->backend_info.bSupportsPrimitiveRestart = true;      // Assumed support.
-  config->backend_info.bSupportsBindingLayout = false;        // Assumed support.
-  config->backend_info.bSupportsPaletteConversion = true;     // Assumed support.
-  config->backend_info.bSupportsClipControl = true;           // Assumed support.
-  config->backend_info.bSupportsMultithreading = true;        // Assumed support.
-  config->backend_info.bSupportsComputeShaders = true;        // Assumed support.
-  config->backend_info.bSupportsGPUTextureDecoding = true;    // Assumed support.
-  config->backend_info.bSupportsBitfield = true;              // Assumed support.
+  config->backend_info.bSupports3DVision = false;                  // D3D-exclusive.
+  config->backend_info.bSupportsOversizedViewports = true;         // Assumed support.
+  config->backend_info.bSupportsEarlyZ = true;                     // Assumed support.
+  config->backend_info.bSupportsPrimitiveRestart = true;           // Assumed support.
+  config->backend_info.bSupportsBindingLayout = false;             // Assumed support.
+  config->backend_info.bSupportsPaletteConversion = true;          // Assumed support.
+  config->backend_info.bSupportsClipControl = true;                // Assumed support.
+  config->backend_info.bSupportsMultithreading = true;             // Assumed support.
+  config->backend_info.bSupportsComputeShaders = true;             // Assumed support.
+  config->backend_info.bSupportsGPUTextureDecoding = true;         // Assumed support.
+  config->backend_info.bSupportsBitfield = true;                   // Assumed support.
   config->backend_info.bSupportsDynamicSamplerIndexing = true;     // Assumed support.
   config->backend_info.bSupportsPostProcessing = true;             // Assumed support.
   config->backend_info.bSupportsBackgroundCompiling = true;        // Assumed support.

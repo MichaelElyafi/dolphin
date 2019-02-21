@@ -90,6 +90,7 @@ Renderer::Renderer(int backbuffer_width, int backbuffer_height, float backbuffer
   CalculateTargetSize();
 
   m_aspect_wide = SConfig::GetInstance().bWii && Config::Get(Config::SYSCONF_WIDESCREEN);
+  m_last_refresh_rate = VideoInterface::GetTargetFractionalRefreshRate();
 }
 
 Renderer::~Renderer() = default;
@@ -104,6 +105,10 @@ void Renderer::Shutdown()
   // First stop any framedumping, which might need to dump the last xfb frame. This process
   // can require additional graphics sub-systems so it needs to be done first
   ShutdownFrameDumping();
+  
+  if (m_fullscreen_state)
+    ChangeFullscreenState(false, 0.0f);
+  
   ShutdownImGui();
 }
 
@@ -306,9 +311,9 @@ void Renderer::DrawDebugText()
                          ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing))
     {
     const Core::PerformanceStatistics& pstats = Core::GetPerformanceStatistics();
-	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "FPS: %.0f", pstats.FPS);
-	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "VPS: %.0f", pstats.VPS);
-	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SPEED: %.0f%", pstats.Speed);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "FPS: %.2f", pstats.FPS);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "VPS: %.2f", pstats.VPS);
+	ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "SPEED: %.2f", pstats.Speed);
     }
     ImGui::End();
   }
@@ -521,7 +526,8 @@ void Renderer::SetWindowSize(int width, int height)
   {
     m_last_window_request_width = width;
     m_last_window_request_height = height;
-    Host_RequestRenderWindowSize(width, height);
+    if (!m_fullscreen_state)
+      Host_RequestRenderWindowSize(width, height);
   }
 }
 
@@ -596,6 +602,23 @@ void Renderer::RecordVideoMemory()
   FifoRecorder::GetInstance().SetVideoMemory(bpmem_ptr, cpmem, xfmem_ptr, xfregs_ptr, xfregs_size,
                                              texMem);
 }
+
+void Renderer::SetFullscreen(bool enable_fullscreen)
+{
+  if (enable_fullscreen == m_fullscreen_state)
+    return;
+
+  ChangeFullscreenState(enable_fullscreen,
+                        g_ActiveConfig.bSyncRefreshRate ? m_last_refresh_rate : 0.0f);
+}
+
+bool Renderer::ChangeFullscreenState(bool enable, float target_refresh_rate)
+{
+  m_fullscreen_state = enable;
+  Host_RequestFullscreen(enable, target_refresh_rate);
+  return true;
+}
+
 
 static std::string GenerateImGuiVertexShader()
 {
@@ -913,6 +936,16 @@ void Renderer::Swap(u32 xfbAddr, u32 fbWidth, u32 fbStride, u32 fbHeight, const 
   // This is required even if frame dumping has stopped, since the frame dump is one frame
   // behind the renderer.
   FlushFrameDump();
+  
+  // If the refresh rate has changed, update the host.
+  const float current_refresh_rate = VideoInterface::GetTargetFractionalRefreshRate();
+  if (m_last_refresh_rate != current_refresh_rate)
+  {
+    m_last_refresh_rate = current_refresh_rate;
+    if (IsFullscreen() && g_ActiveConfig.bSyncRefreshRate)
+      ChangeFullscreenState(true, current_refresh_rate);
+  }
+
 
   if (xfbAddr && fbWidth && fbStride && fbHeight)
   {

@@ -52,10 +52,9 @@ public final class SettingsFile
   public static final String KEY_SYNC_GPU_OVERCLOCK = "SyncGpuOverclock";
   public static final String KEY_MMU_EMULATION = "MMU";
   public static final String KEY_FAST_DISC_SPEED = "FastDiscSpeed";
-  public static final String KEY_VSYNC = "VSync";
   
   public static final String KEY_AUDIO_STRETCH = "AudioStretch";
-  
+  public static final String KEY_AUDIO_VOLUME = "Volume";
   public static final String KEY_AUDIO_BACKEND = "Backend";
 
   public static final String KEY_AUTO_DISC_CHANGE = "AutoDiscChange";
@@ -73,6 +72,7 @@ public final class SettingsFile
   public static final String KEY_OSD_MESSAGES = "OnScreenDisplayMessages";
 
   public static final String KEY_SHOW_FPS = "ShowFPS";
+  public static final String KEY_VSYNC = "VSync";
   public static final String KEY_INTERNAL_RES = "InternalResolution";
   public static final String KEY_FSAA = "MSAA";
   public static final String KEY_ANISOTROPY = "MaxAnisotropy";
@@ -86,6 +86,20 @@ public final class SettingsFile
   public static final String KEY_WIDE_SCREEN_HACK = "wideScreenHack";
   public static final String KEY_FORCE_24_BIT_COLOR = "ForceTrueColor";
   public static final String KEY_BACKEND_MULTITHREADING = "BackendMultithreading";
+  
+  public static final String KEY_DEFAULT_ISO = "DefaultISO";
+  public static final String KEY_INSERT_SD = "WiiSDCard";
+  public static final String KEY_SD_CARD = "WiiSDCardPath";
+  
+  
+  public static final String KEY_TRAVERSAL_CHOICE = "TraversalChoice";
+  public static final String KEY_NICKNAME = "Nickname";
+  public static final String KEY_HOSTCODE = "HostCode";
+  public static final String KEY_CONNECTPORT = "ConnectPort";
+  public static final String KEY_HOSTPORT = "HostPort";
+  public static final String KEY_LISTENPORT = "ListenPort";
+  public static final String KEY_SELECTED_HOSTGAME = "SelectedHostGame";
+  
 
   public static final String KEY_STEREO_MODE = "StereoMode";
   public static final String KEY_STEREO_DEPTH = "StereoDepth";

@@ -1,5 +1,6 @@
 package org.dolphinemu.dolphinemu.dialogs;
 
+import android.view.ContextThemeWrapper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class GameSettingsDialog extends DialogFragment
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState)
   {
-    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.GameSettingsDialogWindow));
 
     String gameId = getArguments().getString(ARG_GAMEID);
     int platform = getArguments().getInt(ARG_PLATFORM);
@@ -50,20 +51,20 @@ public class GameSettingsDialog extends DialogFragment
                 case 0:
                   SettingsActivity.launch(getContext(), MenuTag.CONFIG, gameId);
                   break;
+                //case 1:
+                //  SettingsActivity.launch(getContext(), MenuTag.GRAPHICS, gameId);
+                //  break;
                 case 1:
-                  SettingsActivity.launch(getContext(), MenuTag.GRAPHICS, gameId);
-                  break;
-                case 2:
                   SettingsActivity.launch(getContext(), MenuTag.GCPAD_TYPE, gameId);
                   break;
-                case 3:
+                case 2:
                   // Clear option for GC, Wii controls for else
                   if (platform == Platform.GAMECUBE.toInt())
                     clearGameSettings(gameId);
                   else
                     SettingsActivity.launch(getActivity(), MenuTag.WIIMOTE, gameId);
                   break;
-                case 4:
+                case 3:
                   clearGameSettings(gameId);
                   break;
               }

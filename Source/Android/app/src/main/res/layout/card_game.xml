@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+		android:background="@android:color/black">
 
         <ImageView
             android:id="@+id/image_game_screen"
@@ -33,20 +34,38 @@
             android:ellipsize="end"
             android:lines="1"
             android:maxLines="1"
+			android:textColor="@android:color/white"
             tools:text="The Legend of Zelda: The Wind Waker"/>
-
+			
         <TextView
-            android:id="@+id/text_company"
+            android:id="@+id/text_platform"
+            android:text="@string/game_platform_wii"
             style="@android:style/TextAppearance.Material.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
             android:lines="1"
             android:maxLines="1"
+			android:textColor="@android:color/white"
+            tools:text="NGC"/>
+			
+        <TextView
+            android:id="@+id/text_company"
+            style="@android:style/TextAppearance.Material.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+			android:textColor="@android:color/white"
             tools:text="Nintendo"/>
 
     </LinearLayout>

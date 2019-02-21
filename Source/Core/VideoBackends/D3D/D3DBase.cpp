@@ -12,7 +12,7 @@
 #include "Core/ConfigManager.h"
 #include "VideoBackends/D3D/D3DBase.h"
 #include "VideoBackends/D3D/D3DState.h"
-#include "VideoBackends/D3D/D3DTexture.h"
+#include "VideoBackends/D3D/DXTexture.h"
 #include "VideoCommon/VideoConfig.h"
 
 namespace DX11
@@ -42,7 +42,8 @@ IDXGISwapChain1* swapchain = nullptr;
 static IDXGIFactory2* s_dxgi_factory;
 static ID3D11Debug* s_debug;
 static D3D_FEATURE_LEVEL s_featlevel;
-static D3DTexture2D* s_backbuf;
+static std::unique_ptr<DXTexture> s_swap_chain_texture;
+static std::unique_ptr<DXFramebuffer> s_swap_chain_framebuffer;
 
 static std::vector<DXGI_SAMPLE_DESC> s_aa_modes;  // supported AA modes of the current adapter
 
@@ -244,18 +245,40 @@ static bool SupportsBPTCTextures(ID3D11Device* dev)
   return (bc7_support & D3D11_FORMAT_SUPPORT_TEXTURE2D) != 0;
 }
 
-static bool CreateSwapChainTextures()
+static bool CreateSwapChainFramebuffer()
 {
-  ID3D11Texture2D* buf;
-  HRESULT hr = swapchain->GetBuffer(0, IID_ID3D11Texture2D, (void**)&buf);
+  ID3D11Texture2D* texture;
+  HRESULT hr = swapchain->GetBuffer(0, IID_ID3D11Texture2D, (void**)&texture);
   CHECK(SUCCEEDED(hr), "GetBuffer for swap chain failed with HRESULT %08X", hr);
   if (FAILED(hr))
     return false;
 
-  s_backbuf = new D3DTexture2D(buf, D3D11_BIND_RENDER_TARGET);
-  SAFE_RELEASE(buf);
-  SetDebugObjectName(s_backbuf->GetTex(), "backbuffer texture");
-  SetDebugObjectName(s_backbuf->GetRTV(), "backbuffer render target view");
+  D3D11_TEXTURE2D_DESC desc;
+  texture->GetDesc(&desc);
+
+  s_swap_chain_texture = std::make_unique<DXTexture>(
+      TextureConfig(desc.Width, desc.Height, desc.MipLevels, desc.ArraySize, desc.SampleDesc.Count,
+                    AbstractTextureFormat::RGBA8, AbstractTextureFlag_RenderTarget),
+      texture, nullptr, nullptr);
+
+  ID3D11RenderTargetView* rtv;
+  CD3D11_RENDER_TARGET_VIEW_DESC rtv_desc(texture, D3D11_RTV_DIMENSION_TEXTURE2DARRAY, desc.Format,
+                                          0, 0, desc.ArraySize);
+  hr = device->CreateRenderTargetView(texture, &rtv_desc, &rtv);
+  CHECK(SUCCEEDED(hr), "Create render target view for swap chain");
+  if (FAILED(hr))
+  {
+    s_swap_chain_texture.reset();
+    return false;
+  }
+
+  SetDebugObjectName(texture, "backbuffer texture");
+  SetDebugObjectName(rtv, "backbuffer render target view");
+  s_swap_chain_framebuffer = std::make_unique<DXFramebuffer>(
+      s_swap_chain_texture.get(), nullptr, AbstractTextureFormat::RGBA8,
+      AbstractTextureFormat::Undefined, desc.Width, desc.Height, desc.ArraySize,
+      desc.SampleDesc.Count, rtv, nullptr, nullptr);
+
   return true;
 }
 
@@ -300,7 +323,7 @@ static bool CreateSwapChain(HWND hWnd)
     return false;
   }
 
-  if (!CreateSwapChainTextures())
+  if (!CreateSwapChainFramebuffer())
   {
     SAFE_RELEASE(swapchain);
     return false;
@@ -451,7 +474,8 @@ void Close()
 
   // release all bound resources
   context->ClearState();
-  SAFE_RELEASE(s_backbuf);
+  s_swap_chain_framebuffer.reset();
+  s_swap_chain_texture.reset();
   SAFE_RELEASE(swapchain);
   SAFE_DELETE(stateman);
   context->Flush();  // immediately destroy device objects
@@ -527,9 +551,13 @@ const char* ComputeShaderVersionString()
     return "cs_4_0";
 }
 
-D3DTexture2D* GetBackBuffer()
+DXTexture* GetSwapChainTexture()
 {
-  return s_backbuf;
+  return s_swap_chain_texture.get();
+}
+DXFramebuffer* GetSwapChainFramebuffer()
+{
+  return s_swap_chain_framebuffer.get();
 }
 bool BGRATexturesSupported()
 {
@@ -568,7 +596,8 @@ u32 GetMaxTextureSize(D3D_FEATURE_LEVEL feature_level)
 
 void Reset(HWND new_wnd)
 {
-  SAFE_RELEASE(s_backbuf);
+  s_swap_chain_framebuffer.reset();
+  s_swap_chain_texture.reset();
 
   if (swapchain)
   {
@@ -583,10 +612,11 @@ void Reset(HWND new_wnd)
 
 void ResizeSwapChain()
 {
-  SAFE_RELEASE(s_backbuf);
+  s_swap_chain_framebuffer.reset();
+  s_swap_chain_texture.reset();
   const UINT swap_chain_flags = AllowTearingSupported() ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
   swapchain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_R8G8B8A8_UNORM, swap_chain_flags);
-  if (!CreateSwapChainTextures())
+  if (!CreateSwapChainFramebuffer())
   {
     PanicAlert("Failed to get swap chain textures");
     SAFE_RELEASE(swapchain);
@@ -613,9 +643,60 @@ void Present()
   swapchain->Present(static_cast<UINT>(g_ActiveConfig.bVSyncActive), present_flags);
 }
 
-HRESULT SetFullscreenState(bool enable_fullscreen)
+bool SetFullscreenState(bool enable_fullscreen, float refresh_rate)
 {
-  return swapchain->SetFullscreenState(enable_fullscreen, nullptr);
+  HRESULT hr;
+  if (FAILED(hr = swapchain->SetFullscreenState(enable_fullscreen, nullptr)))
+    return false;
+
+  if (!enable_fullscreen || refresh_rate <= 0.0f)
+    return true;
+
+  IDXGIOutput* output;
+  if (FAILED(hr = swapchain->GetContainingOutput(&output)))
+    return false;
+
+  DXGI_SWAP_CHAIN_DESC current_desc;
+  if (FAILED(hr = swapchain->GetDesc(&current_desc)))
+    return false;
+
+  // Get the dimensions of the new-fullscreen window. This is our fullscreen resolution.
+  RECT client_rc = {};
+  GetClientRect(current_desc.OutputWindow, &client_rc);
+
+  const UINT numerator = static_cast<UINT>(std::floor(refresh_rate * 1000.0f));
+  const UINT denominator = 1000u;
+
+  DXGI_MODE_DESC new_mode = current_desc.BufferDesc;
+  new_mode.Width = std::max(client_rc.right - client_rc.left, static_cast<LONG>(640));
+  new_mode.Height = std::max(client_rc.bottom - client_rc.top, static_cast<LONG>(480));
+  new_mode.RefreshRate.Numerator = numerator;
+  new_mode.RefreshRate.Denominator = denominator;
+
+  DXGI_MODE_DESC closest_mode;
+  if (FAILED(hr = output->FindClosestMatchingMode(&new_mode, &closest_mode, device)))
+  {
+    ERROR_LOG(VIDEO, "Failed to find closest matching mode");
+    return false;
+  }
+
+  // Don't switch modes if it's not necessary.
+  if (std::tie(new_mode.Width, new_mode.Height, new_mode.RefreshRate.Numerator,
+               new_mode.RefreshRate.Denominator) ==
+      std::tie(current_desc.BufferDesc.Width, current_desc.BufferDesc.Height,
+               current_desc.BufferDesc.RefreshRate.Numerator,
+               current_desc.BufferDesc.RefreshRate.Denominator))
+  {
+    return true;
+  }
+
+  if (FAILED(swapchain->ResizeTarget(&closest_mode)))
+  {
+    swapchain->SetFullscreenState(false, nullptr);
+    return false;
+  }
+
+  return true;
 }
 
 bool GetFullscreenState()

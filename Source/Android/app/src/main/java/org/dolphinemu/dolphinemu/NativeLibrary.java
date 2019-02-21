@@ -359,6 +359,8 @@ public final class NativeLibrary
    * Returns the current working audio backend
    */
   public static native String DefaultAudioBackend();
+  
+  public static native String NetPlayTraversalServer();
 
   /**
    * Begins emulation.

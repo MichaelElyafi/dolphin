@@ -5,7 +5,7 @@ message(STATUS "Found Qt version ${Qt5Core_VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 
-add_executable(dolphin-zek
+add_executable(dolphin-emu
   AboutDialog.cpp
   CheatsManager.cpp
   DiscordHandler.cpp
@@ -127,20 +127,20 @@ add_executable(dolphin-zek
   Updater.cpp
 )
 
-target_compile_definitions(dolphin-zek
+target_compile_definitions(dolphin-emu
 PRIVATE
   -DQT_USE_QSTRINGBUILDER
   -DQT_NO_CAST_FROM_ASCII
   -DQT_NO_CAST_TO_ASCII
 )
 
-target_include_directories(dolphin-zek
+target_include_directories(dolphin-emu
 PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}
   ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
 )
 
-target_link_libraries(dolphin-zek
+target_link_libraries(dolphin-emu
 PRIVATE
   core
   Qt5::Widgets
@@ -149,7 +149,7 @@ PRIVATE
 )
 
 if(WIN32)
-  target_sources(dolphin-zek PRIVATE DolphinQt.manifest)
+  target_sources(dolphin-emu PRIVATE DolphinQt.manifest)
 endif()
 
 # Handle localization
@@ -190,34 +190,34 @@ if(APPLE)
   set(BUNDLE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Dolphin.app)
 
   # Ask for an application bundle.
-  set_target_properties(dolphin-zek PROPERTIES
+  set_target_properties(dolphin-emu PROPERTIES
     MACOSX_BUNDLE true
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in
     OUTPUT_NAME Dolphin
     )
 
   # Copy qt.conf into the bundle
-  target_sources(dolphin-zek PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/qt.conf")
+  target_sources(dolphin-emu PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/qt.conf")
   set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/qt.conf" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
   # Copy icon into the bundle
-  target_sources(dolphin-zek PRIVATE "${CMAKE_SOURCE_DIR}/Data/Dolphin.icns")
+  target_sources(dolphin-emu PRIVATE "${CMAKE_SOURCE_DIR}/Data/Dolphin.icns")
   set_source_files_properties("${CMAKE_SOURCE_DIR}/Data/Dolphin.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
   # Copy Qt plugins into the bundle
   get_target_property(qtcocoa_location Qt5::QCocoaIntegrationPlugin LOCATION)
-  target_sources(dolphin-zek PRIVATE "${qtcocoa_location}")
+  target_sources(dolphin-emu PRIVATE "${qtcocoa_location}")
   set_source_files_properties("${qtcocoa_location}" PROPERTIES MACOSX_PACKAGE_LOCATION MacOS/platforms)
 
   get_target_property(qtmacstyle_location Qt5::QMacStylePlugin LOCATION)
-  target_sources(dolphin-zek PRIVATE "${qtmacstyle_location}")
+  target_sources(dolphin-emu PRIVATE "${qtmacstyle_location}")
   set_source_files_properties("${qtmacstyle_location}" PROPERTIES MACOSX_PACKAGE_LOCATION MacOS/styles)
 
   # Copy resources into the bundle
   set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/Data/Sys")
   file(GLOB_RECURSE resources RELATIVE "${CMAKE_SOURCE_DIR}/Data" "${CMAKE_SOURCE_DIR}/Data/Sys/*")
   foreach(res ${resources})
-    target_sources(dolphin-zek PRIVATE "${CMAKE_SOURCE_DIR}/Data/${res}")
+    target_sources(dolphin-emu PRIVATE "${CMAKE_SOURCE_DIR}/Data/${res}")
     get_filename_component(resdir "${res}" DIRECTORY)
     set_source_files_properties("${CMAKE_SOURCE_DIR}/Data/${res}" PROPERTIES
       MACOSX_PACKAGE_LOCATION "Resources/${resdir}")
@@ -225,16 +225,16 @@ if(APPLE)
   endforeach()
 
   # Copy MoltenVK into the bundle
-  target_sources(dolphin-zek PRIVATE "${CMAKE_SOURCE_DIR}/Externals/MoltenVK/libvulkan.dylib")
+  target_sources(dolphin-emu PRIVATE "${CMAKE_SOURCE_DIR}/Externals/MoltenVK/libvulkan.dylib")
   set_source_files_properties("${CMAKE_SOURCE_DIR}/Externals/MoltenVK/libvulkan.dylib" PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
 
   # Update library references to make the bundle portable
   include(DolphinPostprocessBundle)
-  dolphin_postprocess_bundle(dolphin-zek)
+  dolphin_postprocess_bundle(dolphin-emu)
 else()
-  install(TARGETS dolphin-zek RUNTIME DESTINATION ${bindir})
+  install(TARGETS dolphin-emu RUNTIME DESTINATION ${bindir})
 endif()
 
 if(USE_DISCORD_PRESENCE)
-  target_compile_definitions(dolphin-zek PRIVATE -DUSE_DISCORD_PRESENCE)
+  target_compile_definitions(dolphin-emu PRIVATE -DUSE_DISCORD_PRESENCE)
 endif()

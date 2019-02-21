@@ -43,6 +43,11 @@
 
 #include "Core/Config/GraphicsSettings.h"
 
+#include "Core/Config/NetplaySettings.h"
+#include "Core/NetPlayClient.h"
+#include "Core/NetPlayProto.h"
+#include "Core/NetPlayServer.h"
+
 #include "Core/Config/MainSettings.h"
 #include "Core/ConfigManager.h"
 #include "Core/Core.h"
@@ -138,6 +143,10 @@ void Host_UpdateMainFrame()
 {
 }
 
+void Host_RequestFullscreen(bool active, float refresh_rate)
+{
+}
+
 void Host_RequestRenderWindowSize(int width, int height)
 {
   std::thread jnicall(UpdatePointer);
@@ -152,11 +161,6 @@ bool Host_UINeedsControllerState()
 bool Host_RendererHasFocus()
 {
   return true;
-}
-
-bool Host_RendererIsFullscreen()
-{
-  return false;
 }
 
 void Host_YieldToUI()
@@ -576,6 +580,14 @@ JNIEXPORT jstring JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_DefaultAu
   return ToJString(env, AudioCommon::GetDefaultSoundBackend());
 }
 
+JNIEXPORT jstring JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_NetPlayTraversalServer(JNIEnv* env,
+                                                                                   jobject obj)
+{
+  //const std::string traversal_choice = Config::Get(Config::NETPLAY_TRAVERSAL_CHOICE);
+  //const bool is_traversal = traversal_choice == "traversal";
+  //traversal_choice == "traversal";
+  return ToJString(env, "traversal");
+}
 
 JNIEXPORT void JNICALL Java_org_dolphinemu_dolphinemu_NativeLibrary_SetProfiling(JNIEnv* env,
                                                                                  jobject obj,

@@ -22,7 +22,7 @@ PulseAudio::PulseAudio() : m_thread(), m_run_thread()
 bool PulseAudio::Init()
 {
   m_stereo = !SConfig::GetInstance().bDPL2Decoder;
-  m_channels = m_stereo ? 2 : 5;  // will tell PA we use a Stereo or 5.0 channel setup
+  m_channels = m_stereo ? 2 : 6;  // will tell PA we use a Stereo or 5.0 channel setup
 
   NOTICE_LOG(AUDIO, "PulseAudio backend using %d channels", m_channels);
 
@@ -96,12 +96,13 @@ bool PulseAudio::PulseInit()
     m_bytespersample = sizeof(float);
 
     channel_map_p = &channel_map;  // explicit channel map:
-    channel_map.channels = 5;
+    channel_map.channels = 6;
     channel_map.map[0] = PA_CHANNEL_POSITION_FRONT_LEFT;
     channel_map.map[1] = PA_CHANNEL_POSITION_FRONT_RIGHT;
     channel_map.map[2] = PA_CHANNEL_POSITION_FRONT_CENTER;
-    channel_map.map[3] = PA_CHANNEL_POSITION_REAR_LEFT;
-    channel_map.map[4] = PA_CHANNEL_POSITION_REAR_RIGHT;
+    channel_map.map[3] = PA_CHANNEL_POSITION_LFE;
+    channel_map.map[4] = PA_CHANNEL_POSITION_REAR_LEFT;
+    channel_map.map[5] = PA_CHANNEL_POSITION_REAR_RIGHT;
   }
   ss.channels = m_channels;
   ss.rate = m_mixer->GetSampleRate();
@@ -185,10 +186,10 @@ void PulseAudio::WriteCallback(pa_stream* s, size_t length)
   }
   else
   {
-    if (m_channels == 5)  // Extract dpl2/5.0 Surround
+    if (m_channels == 6)  // Extract dpl2/5.1 Surround
     {
       float floatbuffer_6chan[frames * 6];
-      m_mixer->MixSurround(floatbuffer_6chan, frames);
+      m_mixer->MixSurround((float*)buffer, frames);
 
       // DPL2Decode output: LEFTFRONT, RIGHTFRONT, CENTREFRONT, (sub), LEFTREAR, RIGHTREAR
       // Discard the subwoofer channel - DPL2Decode generates a pretty

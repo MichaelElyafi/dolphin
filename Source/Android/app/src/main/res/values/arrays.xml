@@ -108,7 +108,7 @@
         <item>512</item>
         <item>0</item>
     </integer-array>
-
+	
     <!-- Ubershader Mode Preference -->
     <string-array name="shaderCompilationModeEntries" translatable="false">
         <item>Synchronous</item>
@@ -323,13 +323,11 @@
 
     <string-array name="gameSettingsMenusGC">
         <item>Core Settings</item>
-        <item>GFX Settings</item>
         <item>GameCube Controller Settings</item>
         <item>Clear Game Settings</item>
     </string-array>
     <string-array name="gameSettingsMenusWii">
         <item>Core Settings</item>
-        <item>GFX Settings</item>
         <item>GameCube Controller Settings</item>
         <item>Wii Controller Settings</item>
         <item>Clear Game Settings</item>

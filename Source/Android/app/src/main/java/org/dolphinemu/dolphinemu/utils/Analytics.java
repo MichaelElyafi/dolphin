@@ -1,5 +1,6 @@
 package org.dolphinemu.dolphinemu.utils;
 
+import android.view.ContextThemeWrapper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -70,7 +71,7 @@ public class Analytics
     sPrefsEditor.putBoolean(analyticsAsked, true);
     sPrefsEditor.apply();
 
-    new AlertDialog.Builder(context)
+    new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogAnalytics))
             .setTitle(context.getString(R.string.analytics))
             .setMessage(context.getString(R.string.analytics_desc))
             .setPositiveButton(R.string.yes, (dialogInterface, i) ->

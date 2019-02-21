@@ -13,7 +13,7 @@
 
 AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 {
-  setWindowTitle(tr("About Dolphin Zek"));
+  setWindowTitle(tr("About Dolphin"));
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   QString text = QStringLiteral("");

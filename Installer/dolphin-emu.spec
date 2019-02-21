@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-Name:       dolphin-zek
-Summary:    Dolphin Zek
+Name:       dolphin-emu
+Summary:    Dolphin Emulator
 Version:    5.0
 Release:    0%{?dist}
 Group:      System/Emulators/Other

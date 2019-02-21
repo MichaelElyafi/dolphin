@@ -122,7 +122,7 @@ static bool MapPort(const char* addr, const u16 port)
   std::string port_str = std::to_string(port);
   int result = UPNP_AddPortMapping(
       s_urls.controlURL, s_data.first.servicetype, port_str.c_str(), port_str.c_str(), addr,
-      (std::string("dolphin-zek UDP on ") + addr).c_str(), "UDP", nullptr, nullptr);
+      (std::string("dolphin-emu UDP on ") + addr).c_str(), "UDP", nullptr, nullptr);
 
   if (result != 0)
     return false;

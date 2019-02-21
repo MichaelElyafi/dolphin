@@ -83,8 +83,6 @@ public:
                            float far_depth)
   {
   }
-  virtual void SetFullscreen(bool enable_fullscreen) {}
-  virtual bool IsFullscreen() const { return false; }
   virtual void ApplyState() {}
   virtual void RestoreState() {}
   virtual void ResetAPIState() {}
@@ -167,6 +165,10 @@ public:
 
   // ImGui initialization depends on being able to create textures and pipelines, so do it last.
   bool InitializeImGui();
+  
+  // Fullscreen manipulation. Called from the UI thread.
+  void SetFullscreen(bool enable_fullscreen);
+  bool IsFullscreen() const { return m_fullscreen_state; }
 
   virtual void ClearScreen(const EFBRectangle& rc, bool colorEnable, bool alphaEnable, bool zEnable,
                            u32 color, u32 z) = 0;
@@ -198,6 +200,7 @@ public:
   PostProcessingShaderImplementation* GetPostProcessor() const { return m_post_processor.get(); }
   // Final surface changing
   // This is called when the surface is resized (WX) or the window changes (Android).
+  float GetLastRefreshRate() const { return m_last_refresh_rate; }
   void ChangeSurface(void* new_surface_handle);
   void ResizeSurface();
   bool UseVertexDepthRange() const;
@@ -246,6 +249,10 @@ protected:
   // Renders ImGui windows to the currently-bound framebuffer.
   // Should be called with the ImGui lock held.
   void RenderImGui();
+  
+  // Changes fullscreen state for the backend. This is only overridden in D3D.
+  virtual bool ChangeFullscreenState(bool enable, float target_refresh_rate);
+
 
   // TODO: Remove the width/height parameters once we make the EFB an abstract framebuffer.
   const AbstractFramebuffer* m_current_framebuffer = nullptr;
@@ -268,6 +275,8 @@ protected:
   float m_backbuffer_scale = 1.0f;
   AbstractTextureFormat m_backbuffer_format = AbstractTextureFormat::Undefined;
   TargetRectangle m_target_rectangle = {};
+  float m_last_refresh_rate = 0.0f;
+  bool m_fullscreen_state = false;
 
   std::unique_ptr<PostProcessingShaderImplementation> m_post_processor;
 

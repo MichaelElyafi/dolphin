@@ -7,7 +7,7 @@ set(CMAKE_OSX_ARCHITECTURES "x86_64")
 # This is inserted into the Info.plist as well.
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10.0" CACHE STRING "")
 
-project(dolphin-zek)
+project(dolphin-emu)
 
 # Name of the Dolphin distributor. If you redistribute Dolphin builds (forks,
 # unofficial builds) please consider identifying your distribution with a
@@ -91,7 +91,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Set up paths
 set(bindir  ${CMAKE_INSTALL_PREFIX}/bin               CACHE PATH "bindir")
-set(datadir ${CMAKE_INSTALL_PREFIX}/share/dolphin-zek CACHE PATH "datadir")
+set(datadir ${CMAKE_INSTALL_PREFIX}/share/dolphin-emu CACHE PATH "datadir")
 set(mandir  ${CMAKE_INSTALL_PREFIX}/share/man         CACHE PATH "mandir")
 add_definitions(-DDATA_DIR="${datadir}/")
 
@@ -587,15 +587,15 @@ else()
   set(PNG png)
 endif()
 
-if (APPLE)
-  message(STATUS "Using ed25519 from Externals")
-  add_subdirectory(Externals/ed25519)
-endif()
-
 # Using static FreeSurround from Externals
 # There is no system FreeSurround library.
 message(STATUS "Using static FreeSurround from Externals")
 add_subdirectory(Externals/FreeSurround)
+
+if (APPLE)
+  message(STATUS "Using ed25519 from Externals")
+  add_subdirectory(Externals/ed25519)
+endif()
 
 # Using static soundtouch from Externals
 # Unable to use system soundtouch library: We require shorts, not floats.
@@ -767,7 +767,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux|FreeBSD|OpenBSD")
 endif()
 
 # packaging information
-set(CPACK_PACKAGE_NAME "dolphin-zek")
+set(CPACK_PACKAGE_NAME "dolphin-emu")
 set(CPACK_PACKAGE_VENDOR "Dolphin Team and Me!")
 set(CPACK_PACKAGE_VERSION_MAJOR ${DOLPHIN_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${DOLPHIN_VERSION_MINOR})

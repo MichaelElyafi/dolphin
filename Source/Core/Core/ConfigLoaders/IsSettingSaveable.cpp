@@ -74,6 +74,7 @@ bool IsSettingSaveable(const Config::ConfigLocation& config_location)
       Config::GFX_ENABLE_WIREFRAME.location,
       Config::GFX_DISABLE_FOG.location,
       Config::GFX_BORDERLESS_FULLSCREEN.location,
+      Config::GFX_SYNC_REFRESH_RATE.location,
       Config::GFX_ENABLE_VALIDATION_LAYER.location,
       Config::GFX_BACKEND_MULTITHREADING.location,
       Config::GFX_COMMAND_BUFFER_EXECUTE_INTERVAL.location,

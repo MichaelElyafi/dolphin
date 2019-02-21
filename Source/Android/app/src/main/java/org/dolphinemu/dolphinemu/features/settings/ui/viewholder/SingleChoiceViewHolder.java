@@ -38,7 +38,34 @@ public final class SingleChoiceViewHolder extends SettingViewHolder
 
     if (item.getDescriptionId() > 0)
     {
-      mTextSettingDescription.setText(item.getDescriptionId());
+      // Special cases for SingleChoiceSetting options with long descriptions
+      switch (item.getDescriptionId())
+      {
+        case R.string.shader_compilation_mode_description:
+          switch (((SingleChoiceSetting) item).getSelectedValue())
+          {
+            case 0:
+              mTextSettingDescription.setText(R.string.shader_compilation_sync_description);
+              break;
+
+            case 1:
+              mTextSettingDescription.setText(R.string.shader_compilation_sync_uber_description);
+              break;
+
+            case 2:
+              mTextSettingDescription.setText(R.string.shader_compilation_async_uber_description);
+              break;
+
+            case 3:
+              mTextSettingDescription.setText(R.string.shader_compilation_async_skip_description);
+              break;
+          }
+          break;
+
+        default:
+          mTextSettingDescription.setText(item.getDescriptionId());
+          break;
+      }
     }
     else if (item instanceof SingleChoiceSetting)
     {
