@@ -13,7 +13,6 @@
 #include "VideoCommon/Fifo.h"
 #include "VideoCommon/GeometryShaderManager.h"
 #include "VideoCommon/PixelShaderManager.h"
-#include "VideoCommon/VertexLoaderManager.h"
 #include "VideoCommon/VertexManagerBase.h"
 #include "VideoCommon/VertexShaderManager.h"
 #include "VideoCommon/XFMemory.h"
@@ -58,7 +57,6 @@ static void XFRegWritten(int transferSize, u32 baseAddress, DataReader src)
       if (xfmem.numChan.numColorChans != (newValue & 3))
         g_vertex_manager->Flush();
       VertexShaderManager::SetLightingConfigChanged();
-      VertexLoaderManager::UpdateCyclesPerVertex();
       break;
 
     case XFMEM_SETCHAN0_AMBCOLOR:  // Channel Ambient Color
@@ -89,11 +87,9 @@ static void XFRegWritten(int transferSize, u32 baseAddress, DataReader src)
     case XFMEM_SETCHAN1_COLOR:
     case XFMEM_SETCHAN0_ALPHA:  // Channel Alpha
     case XFMEM_SETCHAN1_ALPHA:
-      if (((u32*)&xfmem)[address] != (newValue & 0x7fff)){
+      if (((u32*)&xfmem)[address] != (newValue & 0x7fff))
         g_vertex_manager->Flush();
-        VertexShaderManager::SetLightingConfigChanged();
-        VertexLoaderManager::UpdateCyclesPerVertex();
-      }
+      VertexShaderManager::SetLightingConfigChanged();
       break;
 
     case XFMEM_DUALTEX:
@@ -138,10 +134,8 @@ static void XFRegWritten(int transferSize, u32 baseAddress, DataReader src)
       break;
 
     case XFMEM_SETNUMTEXGENS:  // GXSetNumTexGens
-      if (xfmem.numTexGen.numTexGens != (newValue & 15)){
+      if (xfmem.numTexGen.numTexGens != (newValue & 15))
         g_vertex_manager->Flush();
-        VertexLoaderManager::UpdateCyclesPerVertex();
-      }
       break;
 
     case XFMEM_SETTEXMTXINFO:

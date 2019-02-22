@@ -6,6 +6,7 @@
 
 package org.dolphinemu.dolphinemu;
 
+import android.view.ContextThemeWrapper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -439,7 +440,7 @@ public final class NativeLibrary
     {
       // Create object used for waiting.
       final Object lock = new Object();
-      AlertDialog.Builder builder = new AlertDialog.Builder(emulationActivity)
+      AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(emulationActivity, R.style.AlertDialogAnalytics))
               .setTitle(caption)
               .setMessage(text);
 

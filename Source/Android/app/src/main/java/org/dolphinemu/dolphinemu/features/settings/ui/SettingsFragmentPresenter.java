@@ -244,6 +244,8 @@ public final class SettingsFragmentPresenter
 	
 	Setting mmuEmulation = null;
 	Setting fastDiscSpeed = null;
+	Setting enableCheats = null;
+	Setting floatingPointResultFlag = null;
 	Setting syncOnSkipIdle = null;
 	Setting syncGpuOverclock = null;
 
@@ -260,12 +262,13 @@ public final class SettingsFragmentPresenter
     overclock = coreSection.getSetting(SettingsFile.KEY_OVERCLOCK_PERCENT);
     speedLimit = coreSection.getSetting(SettingsFile.KEY_SPEED_LIMIT);
 	
+	enableCheats = coreSection.getSetting(SettingsFile.KEY_ENABLE_CHEATS);
+	floatingPointResultFlag = coreSection.getSetting(SettingsFile.KEY_FPRF);
 	syncOnSkipIdle = coreSection.getSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE);
 	syncGpuOverclock = coreSection.getSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK);
 	mmuEmulation = coreSection.getSetting(SettingsFile.KEY_MMU_EMULATION);
 	fastDiscSpeed = coreSection.getSetting(SettingsFile.KEY_FAST_DISC_SPEED);
 
-	
     autoDiscChange = coreSection.getSetting(SettingsFile.KEY_AUTO_DISC_CHANGE);
     analytics = analyticsSection.getSetting(SettingsFile.KEY_ANALYTICS_ENABLED);
     enableSaveState = coreSection.getSetting(SettingsFile.KEY_ENABLE_SAVE_STATES);
@@ -305,10 +308,12 @@ public final class SettingsFragmentPresenter
     sl.add(new SliderSetting(SettingsFile.KEY_SPEED_LIMIT, Settings.SECTION_INI_CORE,
             R.string.speed_limit, 0, 200, "%", 100, speedLimit));
 			
-	sl.add(new CheckBoxSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE, Settings.SECTION_INI_CORE, R.string.sync_on_skip_idle, R.string.sync_on_skip_idle_description, true, syncOnSkipIdle));
-	sl.add(new SliderSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK, Settings.SECTION_INI_CORE, R.string.sync_gpu_overclock, R.string.sync_gpu_overclock_description, 200, "%", 100, syncGpuOverclock));
-	sl.add(new CheckBoxSetting(SettingsFile.KEY_MMU_EMULATION, Settings.SECTION_INI_CORE, R.string.mmu_emulation, R.string.mmu_emulation_description, true, mmuEmulation));
-	sl.add(new CheckBoxSetting(SettingsFile.KEY_FAST_DISC_SPEED, Settings.SECTION_INI_CORE, R.string.fast_disc_speed, R.string.fast_disc_speed_description, false, fastDiscSpeed));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_ENABLE_CHEATS, Settings.SECTION_INI_CORE, R.string.enable_cheats, R.string.enable_cheats_description, true, enableCheats));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_FPRF, Settings.SECTION_INI_CORE, R.string.fprf, R.string.fprf_description, false, floatingPointResultFlag));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE, Settings.SECTION_INI_CORE, R.string.sync_on_skip_idle, R.string.sync_on_skip_idle_description, false, syncOnSkipIdle));
+	sl.add(new SliderSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK, Settings.SECTION_INI_CORE, R.string.sync_gpu_overclock, R.string.sync_gpu_overclock_description, 200, "%", 0, syncGpuOverclock));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_MMU_EMULATION, Settings.SECTION_INI_CORE, R.string.mmu_emulation, R.string.mmu_emulation_description, false, mmuEmulation));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_FAST_DISC_SPEED, Settings.SECTION_INI_CORE, R.string.fast_disc_speed, R.string.fast_disc_speed_description, true, fastDiscSpeed));
 
 	
     sl.add(new CheckBoxSetting(SettingsFile.KEY_AUTO_DISC_CHANGE, Settings.SECTION_INI_CORE,
@@ -369,42 +374,40 @@ public final class SettingsFragmentPresenter
             R.string.audio_volume, R.string.audio_volume_description, 100, "%", 100, audioVolume));
   }
   
-  private static final Set<String> extensionsForGames = new HashSet<>(Arrays.asList(
-          "gcm", "tgc", "iso", "ciso", "gcz", "wbfs", "wad", "dol", "elf"));
-  
-
-  private static String fileExtensionCheck(String filename)
-  {
-    int i = filename.lastIndexOf('.');
-    return i < 0 ? "" : filename.substring(i + 1);
-  }
-  
-  
   private String[] getGameList()
   {
-    List<String> result = new ArrayList<>();
-    result.add("");
-    try
+     try
     {
       String gamesPath =
               DirectoryInitialization.getDolphinInternalDirectory() + "/Games";
+     //if (!TextUtils.isEmpty(subDir))
+     //{
+     //  gamesPath += "/" + subDir;
+     //}
+
       File file = new File(gamesPath);
       File[] gameFiles = file.listFiles();
       if (gameFiles != null)
       {
+        String[] result = new String[gameFiles.length + 1];
+        result[0] = mView.getActivity().getString(R.string.off);
         for (int i = 0; i < gameFiles.length; i++)
         {
           String name = gameFiles[i].getName();
-			result.add(name);
-
+          int extensionIndex = name.indexOf(".iso");
+          if (extensionIndex > 0)
+          {
+            name = name.substring(0, extensionIndex);
+          }
+          result[i + 1] = name;
         }
 
-		return result.toArray(new String[0]);
+        return result;
       }
     }
     catch (Exception ex)
     {
-      Log.debug("[Settings] Unable to find games");
+      Log.debug("[Settings] Unable to find game files");
       // return empty list
     }
 
@@ -542,6 +545,7 @@ public final class SettingsFragmentPresenter
     Setting waitForShaders = null;
     Setting aspectRatio = null;
 	Setting vSync = null;
+	Setting syncRefreshRate = null;
 	
     SettingSection gfxSection = mSettings.getSection(Settings.SECTION_GFX_SETTINGS);
     showFps = gfxSection.getSetting(SettingsFile.KEY_SHOW_FPS);
@@ -549,6 +553,7 @@ public final class SettingsFragmentPresenter
     waitForShaders = gfxSection.getSetting(SettingsFile.KEY_WAIT_FOR_SHADERS);
     aspectRatio = gfxSection.getSetting(SettingsFile.KEY_ASPECT_RATIO);
 	vSync = mSettings.getSection(Settings.SECTION_GFX_HARDWARE).getSetting(SettingsFile.KEY_VSYNC);
+	syncRefreshRate = gfxSection.getSetting(SettingsFile.KEY_SYNC_REFRESH_RATE);
 
     //sl.add(new HeaderSetting(null, null, R.string.graphics_general, 0));
     sl.add(new SingleChoiceSetting(SettingsFile.KEY_VIDEO_BACKEND_INDEX, Settings.SECTION_INI_CORE,
@@ -566,11 +571,9 @@ public final class SettingsFragmentPresenter
     sl.add(new SingleChoiceSetting(SettingsFile.KEY_ASPECT_RATIO, Settings.SECTION_GFX_SETTINGS,
             R.string.aspect_ratio, R.string.aspect_ratio_description, R.array.aspectRatioEntries,
             R.array.aspectRatioValues, 0, aspectRatio));
-	sl.add(new CheckBoxSetting(SettingsFile.KEY_VSYNC, Settings.SECTION_GFX_HARDWARE, R.string.vSync, R.string.vSync_description, false, vSync));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_VSYNC, Settings.SECTION_GFX_HARDWARE, R.string.vsync, R.string.vsync_description, true, vSync));
 
-    //sl.add(new HeaderSetting(null, null, R.string.graphics_enhancements_and_hacks, 0));
-    //sl.add(new SubmenuSetting(null, null, R.string.enhancements_submenu, 0, MenuTag.ENHANCEMENTS));
-    //sl.add(new SubmenuSetting(null, null, R.string.hacks_submenu, 0, MenuTag.HACKS));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_SYNC_REFRESH_RATE, Settings.SECTION_GFX_SETTINGS, R.string.sync_refresh_rate, R.string.sync_refresh_rate_description, true, syncRefreshRate));
   }
   
   private String[] getShaderList(String subDir)
@@ -726,6 +729,8 @@ public final class SettingsFragmentPresenter
     Setting xfbToTexture = hacksSection.getSetting(SettingsFile.KEY_XFB_TEXTURE);
     Setting immediateXfb = hacksSection.getSetting(SettingsFile.KEY_IMMEDIATE_XFB);
     Setting fastDepth = gfxSection.getSetting(SettingsFile.KEY_FAST_DEPTH);
+    Setting framebufferFormat = gfxSection.getSetting(SettingsFile.KEY_FRAMEBUFFER_FORMAT);
+    Setting vertexRounding = hacksSection.getSetting(SettingsFile.KEY_VERTEX_ROUNDING);
 
     sl.add(new HeaderSetting(null, null, R.string.embedded_frame_buffer, 0));
     sl.add(new CheckBoxSetting(SettingsFile.KEY_SKIP_EFB, Settings.SECTION_GFX_HACKS,
@@ -758,6 +763,13 @@ public final class SettingsFragmentPresenter
     sl.add(new CheckBoxSetting(SettingsFile.KEY_FAST_DEPTH, Settings.SECTION_GFX_SETTINGS,
             R.string.fast_depth_calculation, R.string.fast_depth_calculation_description, true,
             fastDepth));
+    sl.add(new SingleChoiceSetting(SettingsFile.KEY_FRAMEBUFFER_FORMAT, Settings.SECTION_GFX_SETTINGS,
+      R.string.setting_framebuffer_format, R.string.setting_framebuffer_format_description,
+      R.array.framebufferTypeEntries, R.array.framebufferTypeValues, 0,
+      framebufferFormat));
+    sl.add(new CheckBoxSetting(SettingsFile.KEY_VERTEX_ROUNDING, Settings.SECTION_GFX_HACKS,
+            R.string.vertex_rounding, R.string.vertex_rounding_description, false,
+            vertexRounding));
   }
 
   private void addDebugSettings(ArrayList<SettingsItem> sl)

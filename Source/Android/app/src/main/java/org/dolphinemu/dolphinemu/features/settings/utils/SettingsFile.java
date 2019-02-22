@@ -48,6 +48,8 @@ public final class SettingsFile
   public static final String KEY_SPEED_LIMIT = "EmulationSpeed";
   public static final String KEY_VIDEO_BACKEND = "GFXBackend";
   
+  public static final String KEY_ENABLE_CHEATS = "EnableCheats";
+  public static final String KEY_FPRF = "FPRF";
   public static final String KEY_SYNC_ON_SKIP_IDLE = "SyncOnSkipIdle";
   public static final String KEY_SYNC_GPU_OVERCLOCK = "SyncGpuOverclock";
   public static final String KEY_MMU_EMULATION = "MMU";
@@ -73,6 +75,9 @@ public final class SettingsFile
 
   public static final String KEY_SHOW_FPS = "ShowFPS";
   public static final String KEY_VSYNC = "VSync";
+  public static final String KEY_SYNC_REFRESH_RATE = "SyncRefreshRate";
+  public static final String KEY_VERTEX_ROUNDING = "VertexRounding";
+  
   public static final String KEY_INTERNAL_RES = "InternalResolution";
   public static final String KEY_FSAA = "MSAA";
   public static final String KEY_ANISOTROPY = "MaxAnisotropy";
@@ -116,6 +121,7 @@ public final class SettingsFile
   public static final String KEY_IMMEDIATE_XFB = "ImmediateXFBEnable";
   public static final String KEY_FAST_DEPTH = "FastDepthCalc";
   public static final String KEY_ASPECT_RATIO = "AspectRatio";
+  public static final String KEY_FRAMEBUFFER_FORMAT = "FramebufferFormat";
   public static final String KEY_SHADER_COMPILATION_MODE = "ShaderCompilationMode";
   public static final String KEY_WAIT_FOR_SHADERS = "WaitForShadersBeforeStarting";
 

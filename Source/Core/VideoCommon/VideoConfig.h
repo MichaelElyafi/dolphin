@@ -24,6 +24,8 @@
 
 constexpr int EFB_SCALE_AUTO_INTEGRAL = 0;
 
+enum class AbstractTextureFormat : u32;
+
 enum class AspectMode : int
 {
   Auto,
@@ -63,6 +65,7 @@ struct VideoConfig final
   bool bWidescreenHack;
   AspectMode aspect_mode;
   AspectMode suggested_aspect_mode;
+  AbstractTextureFormat iFramebufferFormat;
   bool bCrop;  // Aspect ratio controls.
   bool bShaderCache;
 
@@ -115,7 +118,6 @@ struct VideoConfig final
   bool bEFBAccessEnable;
   bool bPerfQueriesEnable;
   bool bBBoxEnable;
-  bool bBBoxPreferStencilImplementation;  // OpenGL-only, to see how slow it is compared to SSBOs
   bool bForceProgressive;
 
   bool bEFBEmulateFormatChanges;
@@ -187,6 +189,7 @@ struct VideoConfig final
     std::string AdapterName;  // for OpenGL
 
     u32 MaxTextureSize;
+    bool bUsesLowerLeftOrigin;
 
     bool bSupportsDualSourceBlend;
     bool bSupportsPrimitiveRestart;
@@ -215,16 +218,11 @@ struct VideoConfig final
     bool bSupportsBPTCTextures;
     bool bSupportsFramebufferFetch;  // Used as an alternative to dual-source blend on GLES
     bool bSupportsBackgroundCompiling;
+    bool bSupportsLargePoints;
   } backend_info;
 
   // Utility
   bool MultisamplingEnabled() const { return iMultisamples > 1; }
-  bool BBoxUseFragmentShaderImplementation() const
-  {
-    if (backend_info.api_type == APIType::OpenGL && bBBoxPreferStencilImplementation)
-      return false;
-    return backend_info.bSupportsBBox && backend_info.bSupportsFragmentStoresAndAtomics;
-  }
   bool UseGPUTextureDecoding() const
   {
     return backend_info.bSupportsGPUTextureDecoding && bEnableGPUTextureDecoding;

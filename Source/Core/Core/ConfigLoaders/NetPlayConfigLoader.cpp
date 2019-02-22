@@ -41,7 +41,7 @@ public:
     layer->Set(Config::SYSCONF_PROGRESSIVE_SCAN, m_settings.m_ProgressiveScan);
     layer->Set(Config::SYSCONF_PAL60, m_settings.m_PAL60);
     layer->Set(Config::GFX_HACK_EFB_ACCESS_ENABLE, m_settings.m_EFBAccessEnable);
-    layer->Set(Config::GFX_HACK_BBOX_ENABLE, m_settings.m_BBoxEnable);
+    //layer->Set(Config::GFX_HACK_BBOX_ENABLE, m_settings.m_BBoxEnable);
     layer->Set(Config::GFX_HACK_FORCE_PROGRESSIVE, m_settings.m_ForceProgressive);
     layer->Set(Config::GFX_HACK_SKIP_EFB_COPY_TO_RAM, m_settings.m_EFBToTextureEnable);
     layer->Set(Config::GFX_HACK_SKIP_XFB_COPY_TO_RAM, m_settings.m_XFBToTextureEnable);

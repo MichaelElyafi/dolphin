@@ -59,6 +59,9 @@ public:
   u16 BBoxRead(int index) override;
   void BBoxWrite(int index, u16 value) override;
 
+  void Flush() override;
+  void WaitForGPUIdle() override;
+
 protected:
   bool ChangeFullscreenState(bool enabled, float refresh_rate) override;
   void RenderXFBToScreen(const AbstractTexture* texture, const EFBRectangle& rc) override;

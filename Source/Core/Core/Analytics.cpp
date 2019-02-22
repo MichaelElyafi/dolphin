@@ -337,7 +337,7 @@ void DolphinAnalytics::MakePerGameBuilder()
   builder.AddData("cfg-gfx-ssaa", g_Config.bSSAA);
   builder.AddData("cfg-gfx-anisotropy", g_Config.iMaxAnisotropy);
   builder.AddData("cfg-gfx-vsync", g_Config.bVSync);
-    builder.AddData("cfg-gfx-sync-refresh-rate", g_Config.bSyncRefreshRate);
+  builder.AddData("cfg-gfx-sync-refresh-rate", g_Config.bSyncRefreshRate);
   builder.AddData("cfg-gfx-aspect-ratio", static_cast<int>(g_Config.aspect_mode));
   builder.AddData("cfg-gfx-efb-access", g_Config.bEFBAccessEnable);
   builder.AddData("cfg-gfx-efb-copy-format-changes", g_Config.bEFBEmulateFormatChanges);

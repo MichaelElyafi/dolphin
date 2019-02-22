@@ -97,6 +97,7 @@ void UnloadVulkanLibrary()
   FreeLibrary(vulkan_module);
   vulkan_module = nullptr;
 }
+
 #else
 
 static void* vulkan_module;

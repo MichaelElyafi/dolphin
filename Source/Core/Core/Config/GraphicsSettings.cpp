@@ -8,6 +8,7 @@
 
 #include "Common/Config/Config.h"
 #include "VideoCommon/VideoConfig.h"
+#include "VideoCommon/TextureConfig.h"
 
 namespace Config
 {
@@ -25,6 +26,8 @@ const ConfigInfo<AspectMode> GFX_ASPECT_RATIO{{System::GFX, "Settings", "AspectR
                                               AspectMode::Auto};
 const ConfigInfo<AspectMode> GFX_SUGGESTED_ASPECT_RATIO{
     {System::GFX, "Settings", "SuggestedAspectRatio"}, AspectMode::Auto};
+const ConfigInfo<AbstractTextureFormat> GFX_FRAMEBUFFER_FORMAT{
+    {System::GFX, "Settings", "FramebufferFormat"}, AbstractTextureFormat::RGBA8};
 const ConfigInfo<bool> GFX_CROP{{System::GFX, "Settings", "Crop"}, false};
 const ConfigInfo<int> GFX_SAFE_TEXTURE_CACHE_COLOR_SAMPLES{
     {System::GFX, "Settings", "SafeTextureCacheColorSamples"}, 128};
@@ -132,7 +135,7 @@ const ConfigInfo<int> GFX_STEREO_DEPTH_PERCENTAGE{
 // Graphics.Hacks
 
 const ConfigInfo<bool> GFX_HACK_EFB_ACCESS_ENABLE{{System::GFX, "Hacks", "EFBAccessEnable"}, true};
-const ConfigInfo<bool> GFX_HACK_BBOX_ENABLE{{System::GFX, "Hacks", "BBoxEnable"}, false};
+//const ConfigInfo<bool> GFX_HACK_BBOX_ENABLE{{System::GFX, "Hacks", "BBoxEnable"}, false};
 const ConfigInfo<bool> GFX_HACK_BBOX_PREFER_STENCIL_IMPLEMENTATION{
     {System::GFX, "Hacks", "BBoxPreferStencilImplementation"}, false};
 const ConfigInfo<bool> GFX_HACK_FORCE_PROGRESSIVE{{System::GFX, "Hacks", "ForceProgressive"}, true};

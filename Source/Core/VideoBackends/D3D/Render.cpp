@@ -361,6 +361,17 @@ void Renderer::BBoxWrite(int index, u16 _value)
   BBox::Set(index, value);
 }
 
+void Renderer::Flush()
+{
+  D3D::context->Flush();
+}
+
+void Renderer::WaitForGPUIdle()
+{
+  // There is no glFinish() equivalent in D3D.
+  D3D::context->Flush();
+}
+
 void Renderer::RenderXFBToScreen(const AbstractTexture* texture, const EFBRectangle& rc)
 {
   if (g_ActiveConfig.stereo_mode != StereoMode::Nvidia3DVision)
