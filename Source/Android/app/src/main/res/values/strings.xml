@@ -178,12 +178,6 @@
     <string name="audio_stretch">Audio Stretching</string>
     <string name="audio_stretch_description">Stretches audio to reduce stuttering. Increases latency.</string>
 	
-   <!-- Path Settings -->
-    <string name="path_submenu">Paths</string>
-    <string name="default_iso">Default ISO</string>
-    <string name="default_iso_description">Sets the default ISO</string>
-
-	
     <!-- Graphics Settings -->
     <string name="graphics_graphic">Graphics</string>
     <string name="graphics_general_submenu">General</string>

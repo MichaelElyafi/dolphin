@@ -91,11 +91,8 @@ public final class SettingsFile
   public static final String KEY_WIDE_SCREEN_HACK = "wideScreenHack";
   public static final String KEY_FORCE_24_BIT_COLOR = "ForceTrueColor";
   public static final String KEY_BACKEND_MULTITHREADING = "BackendMultithreading";
-  
-  public static final String KEY_DEFAULT_ISO = "DefaultISO";
+
   public static final String KEY_INSERT_SD = "WiiSDCard";
-  public static final String KEY_SD_CARD = "WiiSDCardPath";
-  
   
   public static final String KEY_TRAVERSAL_CHOICE = "TraversalChoice";
   public static final String KEY_NICKNAME = "Nickname";
@@ -104,7 +101,6 @@ public final class SettingsFile
   public static final String KEY_HOSTPORT = "HostPort";
   public static final String KEY_LISTENPORT = "ListenPort";
   public static final String KEY_SELECTED_HOSTGAME = "SelectedHostGame";
-  
 
   public static final String KEY_STEREO_MODE = "StereoMode";
   public static final String KEY_STEREO_DEPTH = "StereoDepth";

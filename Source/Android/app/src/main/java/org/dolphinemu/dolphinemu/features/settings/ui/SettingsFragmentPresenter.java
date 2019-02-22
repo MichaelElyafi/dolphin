@@ -144,11 +144,7 @@ public final class SettingsFragmentPresenter
       case CONFIG_AUDIO:
         addAudioSettings(sl);
         break;
-		
-      case CONFIG_PATH:
-        addPathSettings(sl);
-        break;
-
+	
       case CONFIG_GAME_CUBE:
         addGameCubeSettings(sl);
         break;
@@ -221,7 +217,6 @@ public final class SettingsFragmentPresenter
     sl.add(new SubmenuSetting(null, null, R.string.general_submenu, 0, MenuTag.CONFIG_GENERAL));
     sl.add(new SubmenuSetting(null, null, R.string.interface_submenu, 0, MenuTag.CONFIG_INTERFACE));
     sl.add(new SubmenuSetting(null, null, R.string.audio_submenu, 0, MenuTag.CONFIG_AUDIO));
-    sl.add(new SubmenuSetting(null, null, R.string.path_submenu, 0, MenuTag.CONFIG_PATH));
     sl.add(new SubmenuSetting(null, null, R.string.gamecube_submenu, 0, MenuTag.CONFIG_GAME_CUBE));
     sl.add(new SubmenuSetting(null, null, R.string.wii_submenu, 0, MenuTag.CONFIG_WII));
     sl.add(new HeaderSetting(null, null, R.string.graphics_graphic, 0));
@@ -372,70 +367,6 @@ public final class SettingsFragmentPresenter
       audioListValues, defaultAudioBackend, audioBackend));
     sl.add(new SliderSetting(SettingsFile.KEY_AUDIO_VOLUME, Settings.SECTION_INI_DSP,
             R.string.audio_volume, R.string.audio_volume_description, 100, "%", 100, audioVolume));
-  }
-  
-  private String[] getGameList()
-  {
-     try
-    {
-      String gamesPath =
-              DirectoryInitialization.getDolphinInternalDirectory() + "/Games";
-     //if (!TextUtils.isEmpty(subDir))
-     //{
-     //  gamesPath += "/" + subDir;
-     //}
-
-      File file = new File(gamesPath);
-      File[] gameFiles = file.listFiles();
-      if (gameFiles != null)
-      {
-        String[] result = new String[gameFiles.length + 1];
-        result[0] = mView.getActivity().getString(R.string.off);
-        for (int i = 0; i < gameFiles.length; i++)
-        {
-          String name = gameFiles[i].getName();
-          int extensionIndex = name.indexOf(".iso");
-          if (extensionIndex > 0)
-          {
-            name = name.substring(0, extensionIndex);
-          }
-          result[i + 1] = name;
-        }
-
-        return result;
-      }
-    }
-    catch (Exception ex)
-    {
-      Log.debug("[Settings] Unable to find game files");
-      // return empty list
-    }
-
-    return new String[]{};
-  }
-  
-  private void addPathSettings(ArrayList<SettingsItem> sl)
-  {
-    Setting defaultISO = null;
-
-    Setting sdCard = null;
-	
-    defaultISO = mSettings.getSection(Settings.SECTION_INI_CORE).getSetting(SettingsFile.KEY_DEFAULT_ISO);
-
-   // sdCard = mSettings.getSection(Settings.SECTION_INI_DSP).getSetting(SettingsFile.KEY_AUDIO_BACKEND);
-	
-    String[] gameEntries = getGameList();
-    String[] gameEntriesValues = new String[gameEntries.length];
-    System.arraycopy(gameEntries, 0, gameEntriesValues, 0, gameEntries.length);
-    //shaderListValues[0] = "";
-    sl.add(new StringSingleChoiceSetting(SettingsFile.KEY_DEFAULT_ISO,
-            Settings.SECTION_INI_CORE, R.string.default_iso,
-            R.string.default_iso, gameEntries, gameEntriesValues, "",
-            defaultISO));
-	
-
-  // sl.add(new CheckBoxSetting(SettingsFile.KEY_AUDIO_STRETCH, Settings.SECTION_INI_CORE,
-  //         R.string.audio_stretch, R.string.audio_stretch_description, false, sdCard));
   }
 
   private void addGameCubeSettings(ArrayList<SettingsItem> sl)

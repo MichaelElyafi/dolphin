@@ -37,7 +37,6 @@
 #define GC_USER_DIR "GC"
 #define WII_USER_DIR "Wii"
 #define CONFIG_DIR "Config"
-#define GAMES_DIR "Games"
 #define GAMESETTINGS_DIR "GameSettings"
 #define MAPS_DIR "Maps"
 #define CACHE_DIR "Cache"
