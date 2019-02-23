@@ -142,6 +142,17 @@
         <item name="android:typeface">normal</item>
         <item name="android:background">@android:color/black</item>
     </style>
+
+	<style name="AlertDialogNoGameID" parent="DolphinBase">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColorSecondary">@android:color/black</item>
+        <item name="android:textColorPrimaryInverse">@android:color/white</item>
+        <item name="android:textColorSecondaryInverse">@android:color/white</item>
+        <item name="android:headerDividersEnabled">true</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
 	
 	<style name="GameSettingsDialogWindow" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorForeground">@android:color/white</item>

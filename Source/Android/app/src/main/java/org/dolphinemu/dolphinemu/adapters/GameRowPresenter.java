@@ -1,5 +1,6 @@
 package org.dolphinemu.dolphinemu.adapters;
 
+import android.view.ContextThemeWrapper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -88,10 +89,10 @@ public final class GameRowPresenter extends Presenter
 
       if (gameId.isEmpty())
       {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.OverlayInGameMenuOption));
         builder.setTitle("Game Settings");
         builder.setMessage("Files without game IDs don't support game-specific settings.");
-
+		builder.create();
         builder.show();
         return true;
       }

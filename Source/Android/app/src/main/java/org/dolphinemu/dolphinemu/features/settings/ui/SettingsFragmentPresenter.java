@@ -242,8 +242,9 @@ public final class SettingsFragmentPresenter
 	Setting enableCheats = null;
 	Setting floatingPointResultFlag = null;
 	Setting syncOnSkipIdle = null;
+	Setting syncGpu = null;
 	Setting syncGpuOverclock = null;
-
+	
     Setting autoDiscChange = null;
     Setting analytics = null;
     Setting enableSaveState;
@@ -260,6 +261,7 @@ public final class SettingsFragmentPresenter
 	enableCheats = coreSection.getSetting(SettingsFile.KEY_ENABLE_CHEATS);
 	floatingPointResultFlag = coreSection.getSetting(SettingsFile.KEY_FPRF);
 	syncOnSkipIdle = coreSection.getSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE);
+	syncGpu = coreSection.getSetting(SettingsFile.KEY_SYNC_GPU);
 	syncGpuOverclock = coreSection.getSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK);
 	mmuEmulation = coreSection.getSetting(SettingsFile.KEY_MMU_EMULATION);
 	fastDiscSpeed = coreSection.getSetting(SettingsFile.KEY_FAST_DISC_SPEED);
@@ -306,6 +308,7 @@ public final class SettingsFragmentPresenter
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_ENABLE_CHEATS, Settings.SECTION_INI_CORE, R.string.enable_cheats, R.string.enable_cheats_description, true, enableCheats));
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_FPRF, Settings.SECTION_INI_CORE, R.string.fprf, R.string.fprf_description, false, floatingPointResultFlag));
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_SYNC_ON_SKIP_IDLE, Settings.SECTION_INI_CORE, R.string.sync_on_skip_idle, R.string.sync_on_skip_idle_description, false, syncOnSkipIdle));
+	sl.add(new CheckBoxSetting(SettingsFile.KEY_SYNC_GPU, Settings.SECTION_INI_CORE, R.string.sync_gpu, R.string.sync_gpu_description, false, syncGpu));
 	sl.add(new SliderSetting(SettingsFile.KEY_SYNC_GPU_OVERCLOCK, Settings.SECTION_INI_CORE, R.string.sync_gpu_overclock, R.string.sync_gpu_overclock_description, 200, "%", 0, syncGpuOverclock));
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_MMU_EMULATION, Settings.SECTION_INI_CORE, R.string.mmu_emulation, R.string.mmu_emulation_description, false, mmuEmulation));
 	sl.add(new CheckBoxSetting(SettingsFile.KEY_FAST_DISC_SPEED, Settings.SECTION_INI_CORE, R.string.fast_disc_speed, R.string.fast_disc_speed_description, true, fastDiscSpeed));

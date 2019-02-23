@@ -1,5 +1,6 @@
 package org.dolphinemu.dolphinemu.adapters;
 
+import android.view.ContextThemeWrapper;
 import android.content.Context;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -187,7 +188,7 @@ public final class GameAdapter extends RecyclerView.Adapter<GameViewHolder> impl
 
     if (gameId.isEmpty())
     {
-      AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+      AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.AlertDialogNoGameID));
       builder.setTitle("Game Settings");
       builder.setMessage("Files without game IDs don't support game-specific settings.");
 

@@ -146,6 +146,8 @@
                                "games. (ON = Compatible, OFF = Fast)".</string>
     <string name="sync_on_skip_idle">Sync On Skip Idle</string>
     <string name="sync_on_skip_idle_description">We are waiting until the FIFO finish and while we process only the events required by the FIFO.</string>
+    <string name="sync_gpu">Sync Gpu</string>
+    <string name="sync_gpu_description">SyncGPU is a speed hack for dual core mode to allow games to get around dual core glitches without having to use single core. Usually not much faster than single core mode.</string>
     <string name="sync_gpu_overclock">Sync Gpu Overclock</string>
     <string name="sync_gpu_overclock_description">Set times to run gpu commands on cpu thread.</string>
     <string name="mmu_emulation">MMU Emulation</string>

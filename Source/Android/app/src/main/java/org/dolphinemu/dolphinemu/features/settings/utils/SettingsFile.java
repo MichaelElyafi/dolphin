@@ -51,6 +51,7 @@ public final class SettingsFile
   public static final String KEY_ENABLE_CHEATS = "EnableCheats";
   public static final String KEY_FPRF = "FPRF";
   public static final String KEY_SYNC_ON_SKIP_IDLE = "SyncOnSkipIdle";
+  public static final String KEY_SYNC_GPU = "SyncGPU";
   public static final String KEY_SYNC_GPU_OVERCLOCK = "SyncGpuOverclock";
   public static final String KEY_MMU_EMULATION = "MMU";
   public static final String KEY_FAST_DISC_SPEED = "FastDiscSpeed";
