@@ -150,6 +150,8 @@
     <string name="sync_gpu_description">SyncGPU is a speed hack for dual core mode to allow games to get around dual core glitches without having to use single core. Usually not much faster than single core mode.</string>
     <string name="sync_gpu_overclock">Sync Gpu Overclock</string>
     <string name="sync_gpu_overclock_description">Set times to run gpu commands on cpu thread.</string>
+    <string name="jit_follow_branch">JIT Follow Branch</string>
+    <string name="jit_follow_branch_description">Tries to translate branches ahead of time, improving performance in most cases."</string>
     <string name="mmu_emulation">MMU Emulation</string>
     <string name="mmu_emulation_description">Disabling MMU Emulation gives good performance, but game may get garbage data or even crash!</string>
     <string name="fast_disc_speed">Fast Disc Speed</string>
