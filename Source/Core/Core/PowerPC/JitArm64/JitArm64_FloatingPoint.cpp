@@ -314,8 +314,6 @@ void JitArm64::fcmpX(UGeckoInstruction inst)
   SetJumpTarget(continue1);
 }
 
-// fctiw: Floating Convert to Integer Word
-// fctiwz: Floating Convert to Integer Word with Round toward Zero
 void JitArm64::fctiwzx(UGeckoInstruction inst)
 {
   INSTRUCTION_START
@@ -341,7 +339,8 @@ void JitArm64::fctiwzx(UGeckoInstruction inst)
   }
   else
   {
-    m_float_emit.FCVTS(EncodeRegToDouble(VD), EncodeRegToDouble(VB), ROUND_Z);
+    m_float_emit.FCVT(32, 64, EncodeRegToDouble(VD), EncodeRegToDouble(VB));
+    m_float_emit.FCVTS(EncodeRegToSingle(VD), EncodeRegToSingle(VD), ROUND_Z);
   }
   m_float_emit.ORR(EncodeRegToDouble(VD), EncodeRegToDouble(VD), EncodeRegToDouble(V0));
   fpr.Unlock(V0);

@@ -246,7 +246,7 @@ void Jit64::bclrx(UGeckoInstruction inst)
   INSTRUCTION_START
   JITDISABLE(bJITBranchOff);
 
-  if (js.op->branchIsIdleLoop)
+    if (js.op->branchIsIdleLoop)
     ERROR_LOG(POWERPC, "FIXME: IDLE LOOP DETECTED at PC %x", js.compilerPC);
 
   FixupBranch pCTRDontBranch;
