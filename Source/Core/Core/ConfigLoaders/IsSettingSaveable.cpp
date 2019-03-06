@@ -32,6 +32,15 @@ bool IsSettingSaveable(const Config::ConfigLocation& config_location)
       Config::MAIN_MEMCARD_A_PATH.location,
       Config::MAIN_MEMCARD_B_PATH.location,
       Config::MAIN_AUTO_DISC_CHANGE.location,
+	  
+      // Main.Display
+      Config::MAIN_FULLSCREEN_DISPLAY_RES.location,
+      Config::MAIN_FULLSCREEN.location,
+      Config::MAIN_RENDER_TO_MAIN.location,
+      Config::MAIN_RENDER_WINDOW_AUTOSIZE.location,
+      Config::MAIN_KEEP_WINDOW_ON_TOP.location,
+      Config::MAIN_DISABLE_SCREENSAVER.location,
+
 
       // Graphics.Hardware
 
@@ -116,6 +125,8 @@ bool IsSettingSaveable(const Config::ConfigLocation& config_location)
       Config::GFX_HACK_EFB_ACCESS_ENABLE.location,
 //      Config::GFX_HACK_BBOX_ENABLE.location,
 //      Config::GFX_HACK_BBOX_PREFER_STENCIL_IMPLEMENTATION.location,
+      Config::GFX_HACK_EFB_DEFER_INVALIDATION.location,
+      Config::GFX_HACK_EFB_ACCESS_TILE_SIZE.location,
       Config::GFX_HACK_FORCE_PROGRESSIVE.location,
       Config::GFX_HACK_SKIP_EFB_COPY_TO_RAM.location,
       Config::GFX_HACK_SKIP_XFB_COPY_TO_RAM.location,
@@ -124,6 +135,7 @@ bool IsSettingSaveable(const Config::ConfigLocation& config_location)
       Config::GFX_HACK_IMMEDIATE_XFB.location,
       Config::GFX_HACK_COPY_EFB_SCALED.location,
       Config::GFX_HACK_EFB_EMULATE_FORMAT_CHANGES.location,
+      Config::GFX_HACK_TMEM_CACHE_EMULATION.location,
       Config::GFX_HACK_VERTEX_ROUDING.location,
 
       // Graphics.GameSpecific

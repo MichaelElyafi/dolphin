@@ -11,6 +11,7 @@ class QCheckBox;
 class QLabel;
 class QRadioButton;
 class QSlider;
+class QSpinBox;
 
 class HacksWidget final : public GraphicsWidget
 {
@@ -28,11 +29,14 @@ private:
   QCheckBox* m_skip_efb_cpu;
   QCheckBox* m_ignore_format_changes;
   QCheckBox* m_store_efb_copies;
-
+  QSpinBox* m_efb_tile_size;
+  QCheckBox* m_defer_efb_invalidation;
+  
   // Texture Cache
   QLabel* m_accuracy_label;
   QSlider* m_accuracy;
   QCheckBox* m_gpu_texture_decoding;
+  QCheckBox* m_tmem_cache_emulation;
 
   // External Framebuffer
   QCheckBox* m_store_xfb_copies;

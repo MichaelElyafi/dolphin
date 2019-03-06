@@ -8,6 +8,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QSignalBlocker>
+#include <QSpinBox>
 #include <QVBoxLayout>
 
 #include "Core/Config/GraphicsSettings.h"
@@ -48,12 +49,29 @@ void HacksWidget::CreateWidgets()
                                         Config::GFX_HACK_SKIP_EFB_COPY_TO_RAM);
   m_defer_efb_copies =
       new GraphicsBool(tr("Defer EFB Copies to RAM"), Config::GFX_HACK_DEFER_EFB_COPIES);
+ 
+  m_defer_efb_invalidation =
+      new GraphicsBool(tr("Defer CPU Cache Invalidation"), Config::GFX_HACK_EFB_DEFER_INVALIDATION);
+  auto* efb_tile_size_layout = new QHBoxLayout();
+  efb_tile_size_layout->setContentsMargins(0, 0, 0, 0);
+  efb_tile_size_layout->addWidget(new QLabel(tr("CPU Cache Tile Size")));
+  efb_tile_size_layout->addSpacing(4);
+  m_efb_tile_size = new QSpinBox();
+  m_efb_tile_size->setRange(0, EFB_WIDTH);
+  m_efb_tile_size->setSingleStep(16);
+  m_efb_tile_size->setValue(Config::Get(Config::GFX_HACK_EFB_ACCESS_TILE_SIZE));
+  connect(
+      m_efb_tile_size, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+      [](int value) { Config::SetBaseOrCurrent(Config::GFX_HACK_EFB_ACCESS_TILE_SIZE, value); });
+  efb_tile_size_layout->addWidget(m_efb_tile_size);
 
   efb_layout->addWidget(m_skip_efb_cpu, 0, 0);
   efb_layout->addWidget(m_ignore_format_changes, 0, 1);
   efb_layout->addWidget(m_store_efb_copies, 1, 0);
   efb_layout->addWidget(m_defer_efb_copies, 1, 1);
-
+  efb_layout->addLayout(efb_tile_size_layout, 2, 1, 1, 1);
+  efb_layout->addWidget(m_defer_efb_invalidation, 2, 0);
+  
   // Texture Cache
   auto* texture_cache_box = new QGroupBox(tr("Texture Cache"));
   auto* texture_cache_layout = new QGridLayout();
@@ -66,6 +84,8 @@ void HacksWidget::CreateWidgets()
   m_accuracy->setTickPosition(QSlider::TicksBelow);
   m_gpu_texture_decoding =
       new GraphicsBool(tr("GPU Texture Decoding"), Config::GFX_ENABLE_GPU_TEXTURE_DECODING);
+  m_tmem_cache_emulation =
+      new GraphicsBool(tr("TMEM Cache Emulation"), Config::GFX_HACK_TMEM_CACHE_EMULATION);
 
   auto* safe_label = new QLabel(tr("Safe"));
   safe_label->setAlignment(Qt::AlignRight);
@@ -77,6 +97,7 @@ void HacksWidget::CreateWidgets()
   texture_cache_layout->addWidget(m_accuracy, 0, 2);
   texture_cache_layout->addWidget(new QLabel(tr("Fast")), 0, 3);
   texture_cache_layout->addWidget(m_gpu_texture_decoding, 1, 0);
+  texture_cache_layout->addWidget(m_tmem_cache_emulation, 2, 0);
 
   // XFB
   auto* xfb_box = new QGroupBox(tr("External Frame Buffer (XFB)"));
@@ -250,12 +271,17 @@ void HacksWidget::AddDescriptions()
       QT_TR_NOOP("Rounds 2D vertices to whole pixels.\n\nFixes graphical problems in some games at "
                  "higher internal resolutions. This setting has no effect when native internal "
                  "resolution is used.\n\nIf unsure, leave this unchecked.");
+  static const char TR_TMEM_CACHE_EMULATION_DESCRIPTION[] = QT_TR_NOOP(
+      "Reuse textures from the cache without validation under certain conditions. Provides a "
+      "small performance boost in some games. Some graphical effects require this, but it causes "
+      "graphical defects in a number of games\n\nIf unsure, leave this checked.");
 
   AddDescription(m_skip_efb_cpu, TR_SKIP_EFB_CPU_ACCESS_DESCRIPTION);
   AddDescription(m_ignore_format_changes, TR_IGNORE_FORMAT_CHANGE_DESCRIPTION);
   AddDescription(m_store_efb_copies, TR_STORE_EFB_TO_TEXTURE_DESCRIPTION);
   AddDescription(m_defer_efb_copies, TR_DEFER_EFB_COPIES_DESCRIPTION);
   AddDescription(m_accuracy, TR_ACCUARCY_DESCRIPTION);
+  AddDescription(m_tmem_cache_emulation, TR_TMEM_CACHE_EMULATION_DESCRIPTION);
   AddDescription(m_store_xfb_copies, TR_STORE_XFB_TO_TEXTURE_DESCRIPTION);
   AddDescription(m_immediate_xfb, TR_IMMEDIATE_XFB_DESCRIPTION);
   AddDescription(m_gpu_texture_decoding, TR_GPU_DECODING_DESCRIPTION);

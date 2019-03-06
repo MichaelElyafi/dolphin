@@ -918,13 +918,13 @@ void MainWindow::StartGame(std::unique_ptr<BootParameters>&& parameters)
     Discord::UpdateDiscordPresence();
 #endif
 
-  if (SConfig::GetInstance().bFullscreen)
+  if (Config::Get(Config::MAIN_FULLSCREEN))
     Host::GetInstance()->SetFullscreenEnabled(true);
 
 #ifdef Q_OS_WIN
   // Prevents Windows from sleeping, turning off the display, or idling
   EXECUTION_STATE shouldScreenSave =
-      SConfig::GetInstance().bDisableScreenSaver ? ES_DISPLAY_REQUIRED : 0;
+      Config::Get(Config::MAIN_DISABLE_SCREENSAVER) ? ES_DISPLAY_REQUIRED : 0;
   SetThreadExecutionState(ES_CONTINUOUS | shouldScreenSave | ES_SYSTEM_REQUIRED);
 #endif
 }
@@ -974,7 +974,7 @@ void MainWindow::RequestFullscreen(bool fullscreen, float refresh_rate)
 
 void MainWindow::ShowRenderWidget()
 {
-  if (SConfig::GetInstance().bRenderToMain)
+  if (Config::Get(Config::MAIN_RENDER_TO_MAIN))
   {
     // If we're rendering to main, add it to the stack and update our title when necessary.
     m_rendering_to_main = true;

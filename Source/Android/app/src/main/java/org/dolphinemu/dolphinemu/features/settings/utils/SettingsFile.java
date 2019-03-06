@@ -79,6 +79,7 @@ public final class SettingsFile
   public static final String KEY_VSYNC = "VSync";
   public static final String KEY_SYNC_REFRESH_RATE = "SyncRefreshRate";
   public static final String KEY_VERTEX_ROUNDING = "VertexRounding";
+  public static final String KEY_TMEM_CACHE = "TMEMCacheEmulation";
   
   public static final String KEY_INTERNAL_RES = "InternalResolution";
   public static final String KEY_FSAA = "MSAA";
@@ -122,6 +123,9 @@ public final class SettingsFile
   public static final String KEY_FRAMEBUFFER_FORMAT = "FramebufferFormat";
   public static final String KEY_SHADER_COMPILATION_MODE = "ShaderCompilationMode";
   public static final String KEY_WAIT_FOR_SHADERS = "WaitForShadersBeforeStarting";
+  
+  public static final String KEY_EFB_DEFER_INVALIDATION = "EFBAccessDeferInvalidation";
+  public static final String KEY_EFB_TILE_SIZE = "EFBAccessTileSize";
 
   public static final String KEY_DEBUG_JITOFF = "JitOff";
   public static final String KEY_DEBUG_JITLOADSTOREOFF = "JitLoadStoreOff";

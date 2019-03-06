@@ -269,6 +269,15 @@
     <string name="fast_depth_calculation_description">Uses a less accurate algorithm to calculate depth values.</string>
     <string name="setting_framebuffer_format">Framebuffer Format</string>
     <string name="setting_framebuffer_format_description">Set color format used in EFB and XFB.</string>
+    <string name="tmem_cache">TMEM Cache</string>
+    <string name="tmem_cache_description">"Reuse textures from the cache without validation under certain conditions. Provides a "
+      "small performance boost in some games. Some graphical effects require this, but it causes "
+      "graphical defects in a number of games\n\nIf unsure, leave this checked."</string>
+	
+    <string name="efb_defer_invalid">EFB Defer Invalidation</string>
+    <string name="efb_defer_invalid_description">Turn on or off</string>
+	
+    <string name="efb_title_size">EFB Access Tile Size</string>
 	
     <string name="aspect_ratio">Aspect Ratio</string>
     <string name="aspect_ratio_description">Select what aspect ratio to use when rendering</string>

@@ -138,6 +138,9 @@ const ConfigInfo<bool> GFX_HACK_EFB_ACCESS_ENABLE{{System::GFX, "Hacks", "EFBAcc
 //const ConfigInfo<bool> GFX_HACK_BBOX_ENABLE{{System::GFX, "Hacks", "BBoxEnable"}, false};
 //const ConfigInfo<bool> GFX_HACK_BBOX_PREFER_STENCIL_IMPLEMENTATION{
 //    {System::GFX, "Hacks", "BBoxPreferStencilImplementation"}, false};
+const ConfigInfo<bool> GFX_HACK_EFB_DEFER_INVALIDATION{
+    {System::GFX, "Hacks", "EFBAccessDeferInvalidation"}, false};
+const ConfigInfo<int> GFX_HACK_EFB_ACCESS_TILE_SIZE{{System::GFX, "Hacks", "EFBAccessTileSize"}, 0};
 const ConfigInfo<bool> GFX_HACK_FORCE_PROGRESSIVE{{System::GFX, "Hacks", "ForceProgressive"}, true};
 const ConfigInfo<bool> GFX_HACK_SKIP_EFB_COPY_TO_RAM{{System::GFX, "Hacks", "EFBToTextureEnable"},
                                                      true};
@@ -150,7 +153,11 @@ const ConfigInfo<bool> GFX_HACK_IMMEDIATE_XFB{{System::GFX, "Hacks", "ImmediateX
 const ConfigInfo<bool> GFX_HACK_COPY_EFB_SCALED{{System::GFX, "Hacks", "EFBScaledCopy"}, true};
 const ConfigInfo<bool> GFX_HACK_EFB_EMULATE_FORMAT_CHANGES{
     {System::GFX, "Hacks", "EFBEmulateFormatChanges"}, false};
+const ConfigInfo<bool> GFX_HACK_TMEM_CACHE_EMULATION{{System::GFX, "Hacks", "TMEMCacheEmulation"},
+                                                     true};
 const ConfigInfo<bool> GFX_HACK_VERTEX_ROUDING{{System::GFX, "Hacks", "VertexRounding"}, false};
+
+           
 
 // Graphics.GameSpecific
 

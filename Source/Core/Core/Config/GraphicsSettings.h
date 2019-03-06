@@ -106,6 +106,8 @@ extern const ConfigInfo<int> GFX_STEREO_DEPTH_PERCENTAGE;
 extern const ConfigInfo<bool> GFX_HACK_EFB_ACCESS_ENABLE;
 //extern const ConfigInfo<bool> GFX_HACK_BBOX_ENABLE;
 //extern const ConfigInfo<bool> GFX_HACK_BBOX_PREFER_STENCIL_IMPLEMENTATION;
+extern const ConfigInfo<bool> GFX_HACK_EFB_DEFER_INVALIDATION;
+extern const ConfigInfo<int> GFX_HACK_EFB_ACCESS_TILE_SIZE;
 extern const ConfigInfo<bool> GFX_HACK_FORCE_PROGRESSIVE;
 extern const ConfigInfo<bool> GFX_HACK_SKIP_EFB_COPY_TO_RAM;
 extern const ConfigInfo<bool> GFX_HACK_SKIP_XFB_COPY_TO_RAM;
@@ -115,6 +117,7 @@ extern const ConfigInfo<bool> GFX_HACK_IMMEDIATE_XFB;
 extern const ConfigInfo<bool> GFX_HACK_COPY_EFB_SCALED;
 extern const ConfigInfo<bool> GFX_HACK_EFB_EMULATE_FORMAT_CHANGES;
 extern const ConfigInfo<bool> GFX_HACK_VERTEX_ROUDING;
+extern const ConfigInfo<bool> GFX_HACK_TMEM_CACHE_EMULATION;
 
 // Graphics.GameSpecific
 

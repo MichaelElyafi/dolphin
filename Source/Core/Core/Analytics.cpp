@@ -23,6 +23,7 @@
 #include "Common/StringUtil.h"
 #include "Common/Timer.h"
 #include "Common/Version.h"
+#include "Core/Config/MainSettings.h"
 #include "Core/ConfigManager.h"
 #include "Core/HW/GCPad.h"
 #include "Core/Movie.h"
@@ -326,7 +327,7 @@ void DolphinAnalytics::MakePerGameBuilder()
   builder.AddData("cfg-audio-backend", SConfig::GetInstance().sBackend);
   builder.AddData("cfg-oc-enable", SConfig::GetInstance().m_OCEnable);
   builder.AddData("cfg-oc-factor", SConfig::GetInstance().m_OCFactor);
-  builder.AddData("cfg-render-to-main", SConfig::GetInstance().bRenderToMain);
+  builder.AddData("cfg-render-to-main", Config::Get(Config::MAIN_RENDER_TO_MAIN));
   if (g_video_backend)
   {
     builder.AddData("cfg-video-backend", g_video_backend->GetName());
@@ -354,6 +355,7 @@ void DolphinAnalytics::MakePerGameBuilder()
   builder.AddData("cfg-gfx-wait-for-shaders", g_Config.bWaitForShadersBeforeStarting);
   builder.AddData("cfg-gfx-fast-depth", g_Config.bFastDepthCalc);
   builder.AddData("cfg-gfx-vertex-rounding", g_Config.UseVertexRounding());
+  builder.AddData("cfg-gfx-tmem-cache-emulation", g_Config.bTMEMCacheEmulation);
 
   // GPU features.
   if (g_Config.iAdapter < static_cast<int>(g_Config.backend_info.Adapters.size()))

@@ -668,6 +668,9 @@ public final class SettingsFragmentPresenter
     Setting fastDepth = gfxSection.getSetting(SettingsFile.KEY_FAST_DEPTH);
     Setting framebufferFormat = gfxSection.getSetting(SettingsFile.KEY_FRAMEBUFFER_FORMAT);
     Setting vertexRounding = hacksSection.getSetting(SettingsFile.KEY_VERTEX_ROUNDING);
+    Setting efbDeferInvalidation = hacksSection.getSetting(SettingsFile.KEY_EFB_DEFER_INVALIDATION);
+    Setting efbAccessTileSize = hacksSection.getSetting(SettingsFile.KEY_EFB_TILE_SIZE);
+    Setting tmemCache = hacksSection.getSetting(SettingsFile.KEY_TMEM_CACHE);
 
     sl.add(new HeaderSetting(null, null, R.string.embedded_frame_buffer, 0));
     sl.add(new CheckBoxSetting(SettingsFile.KEY_SKIP_EFB, Settings.SECTION_GFX_HACKS,
@@ -707,6 +710,15 @@ public final class SettingsFragmentPresenter
     sl.add(new CheckBoxSetting(SettingsFile.KEY_VERTEX_ROUNDING, Settings.SECTION_GFX_HACKS,
             R.string.vertex_rounding, R.string.vertex_rounding_description, false,
             vertexRounding));
+    sl.add(new CheckBoxSetting(SettingsFile.KEY_TMEM_CACHE, Settings.SECTION_GFX_HACKS,
+            R.string.tmem_cache, R.string.tmem_cache_description, true,
+            tmemCache));
+    sl.add(new CheckBoxSetting(SettingsFile.KEY_EFB_DEFER_INVALIDATION, Settings.SECTION_GFX_HACKS,
+            R.string.efb_defer_invalid, R.string.efb_defer_invalid_description, false,
+            efbDeferInvalidation));
+    sl.add(new SliderSetting(SettingsFile.KEY_EFB_TILE_SIZE, Settings.SECTION_GFX_HACKS,
+            R.string.efb_title_size, 0, 100, "", 0, efbAccessTileSize));
+
   }
 
   private void addDebugSettings(ArrayList<SettingsItem> sl)

@@ -391,6 +391,7 @@ void Renderer::CheckForConfigChanges()
   const StereoMode old_stereo = g_ActiveConfig.stereo_mode;
   const u32 old_multisamples = g_ActiveConfig.iMultisamples;
   const int old_anisotropy = g_ActiveConfig.iMaxAnisotropy;
+  const int old_efb_access_tile_size = g_ActiveConfig.iEFBAccessTileSize;
   const bool old_force_filtering = g_ActiveConfig.bForceFiltering;
   const bool old_vsync = g_ActiveConfig.bVSyncActive;
   const bool old_bbox = g_ActiveConfig.bBBoxEnable;
@@ -424,6 +425,10 @@ void Renderer::CheckForConfigChanges()
     changed_bits |= CONFIG_CHANGE_BIT_BBOX;
   if (CalculateTargetSize())
     changed_bits |= CONFIG_CHANGE_BIT_TARGET_SIZE;
+
+  // EFB tile cache doesn't need to notify the backend.
+  if (old_efb_access_tile_size != g_ActiveConfig.iEFBAccessTileSize)
+    g_framebuffer_manager->SetEFBCacheTileSize(std::max(g_ActiveConfig.iEFBAccessTileSize, 0));
 
   // No changes?
   if (changed_bits == 0)

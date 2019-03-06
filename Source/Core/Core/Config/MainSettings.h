@@ -80,6 +80,19 @@ extern const ConfigInfo<bool> MAIN_ENABLE_SIGNATURE_CHECKS;
 extern const ConfigInfo<bool> MAIN_REDUCE_POLLING_RATE;
 extern const ConfigInfo<bool> MAIN_AUTO_DISC_CHANGE;
 
+// Main.Display
+
+extern const ConfigInfo<std::string> MAIN_FULLSCREEN_DISPLAY_RES;
+extern const ConfigInfo<bool> MAIN_FULLSCREEN;
+extern const ConfigInfo<bool> MAIN_RENDER_TO_MAIN;
+extern const ConfigInfo<int> MAIN_RENDER_WINDOW_XPOS;
+extern const ConfigInfo<int> MAIN_RENDER_WINDOW_YPOS;
+extern const ConfigInfo<int> MAIN_RENDER_WINDOW_WIDTH;
+extern const ConfigInfo<int> MAIN_RENDER_WINDOW_HEIGHT;
+extern const ConfigInfo<bool> MAIN_RENDER_WINDOW_AUTOSIZE;
+extern const ConfigInfo<bool> MAIN_KEEP_WINDOW_ON_TOP;
+extern const ConfigInfo<bool> MAIN_DISABLE_SCREENSAVER;
+
 // Main.DSP
 
 extern const ConfigInfo<bool> MAIN_DSP_CAPTURE_LOG;

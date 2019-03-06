@@ -10,6 +10,7 @@
 
 #include "Common/Common.h"
 
+#include "Core/Config/MainSettings.h"
 #include "Core/ConfigManager.h"
 #include "Core/Core.h"
 #include "Core/Debugger/PPCDebugInterface.h"
@@ -68,7 +69,7 @@ void Host::SetRenderFocus(bool focus)
   if (m_fullscreen_enabled.load())
   {
     Core::RunAsCPUThread([focus] {
-      if (g_renderer)
+      if (!Config::Get(Config::MAIN_RENDER_TO_MAIN))
         g_renderer->SetFullscreen(focus);
     });
   }
