@@ -559,6 +559,12 @@ void ProgramShaderCache::InvalidateVertexFormat()
   s_last_VAO = 0;
 }
 
+void ProgramShaderCache::InvalidateVertexFormatIfBound(GLuint vao)
+{
+  if (s_last_VAO == vao)
+    s_last_VAO = 0;
+}
+
 void ProgramShaderCache::InvalidateLastProgram()
 {
   CurrentProgram = 0;

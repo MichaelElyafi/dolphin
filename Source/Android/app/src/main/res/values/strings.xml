@@ -158,6 +158,7 @@
     <string name="fast_disc_speed_description">Accelerates the emulated disc speed, removing any loading emulation.</string>
    
     <string name="auto_disc_change">Change Discs Automatically</string>
+    <string name="auto_disc_change_description">Changes the discs when it needs to</string>
     <string name="enable_save_states">Enable Savestates</string>
     <string name="enable_save_states_description">WARNING: Savestates may not be compatible with future versions of Dolphin and can make it impossible to create normal saves in some cases. Never use savestates as the only way of saving your progress.</string>
     <string name="lock_emulation_landscape">Lock screen to landscape</string>
@@ -212,8 +213,6 @@
     <string name="anisotropic_filtering_description">Enhances visual quality of textures that are at oblique viewing angles. Might cause issues in a small number of games.</string>
     <string name="post_processing_shader">Post-Processing Effect</string>
     <string name="post_processing_shader_description">Apply a post-processing effect after finishing a frame</string>
-    <string name="postprocessing_shader">Post Processing Shader</string>
-    <string name="postprocessing_shader_description">Apply a post-processing effect after finishing a frame.</string>
     <string name="scaled_efb_copy">Scaled EFB Copy</string>
     <string name="scaled_efb_copy_description">Greatly increases quality of textures generated using render to texture effects. Raising the internal resolution will improve the effect of this setting. Slightly decreases performance and possibly causes issues (although unlikely).</string>
     <string name="per_pixel_lighting">Per-Pixel Lighting</string>
@@ -275,7 +274,7 @@
       "graphical defects in a number of games\n\nIf unsure, leave this checked."</string>
 	
     <string name="efb_defer_invalid">EFB Defer Invalidation</string>
-    <string name="efb_defer_invalid_description">Turn on or off</string>
+    <string name="efb_defer_invalid_description">Defer CPU Cache Invalidation</string>
 	
     <string name="efb_title_size">EFB Access Tile Size</string>
 	

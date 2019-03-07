@@ -318,7 +318,7 @@ public final class SettingsFragmentPresenter
 
 	
     sl.add(new CheckBoxSetting(SettingsFile.KEY_AUTO_DISC_CHANGE, Settings.SECTION_INI_CORE,
-            R.string.auto_disc_change, 0, false, autoDiscChange));
+            R.string.auto_disc_change, R.string.auto_disc_change_description, false, autoDiscChange));
     sl.add(new CheckBoxSetting(SettingsFile.KEY_ENABLE_SAVE_STATES, Settings.SECTION_INI_CORE,
             R.string.enable_save_states, R.string.enable_save_states_description, false,
             enableSaveState));
@@ -329,7 +329,7 @@ public final class SettingsFragmentPresenter
               lockToLandscape));
     }
     sl.add(new CheckBoxSetting(SettingsFile.KEY_ANALYTICS_ENABLED, Settings.SECTION_ANALYTICS,
-            R.string.analytics, 0, false, analytics));
+            R.string.analytics, R.string.analytics_desc, false, analytics));
   }
  
   private void addInterfaceSettings(ArrayList<SettingsItem> sl)
